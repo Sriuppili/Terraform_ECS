@@ -124,3 +124,14 @@ resource "aws_ecs_service" "app-service" {
 
   depends_on = [aws_lb_listener.http]
 }
+
+
+# temporarliy creatin ECR here, will move to separate module later
+resource "aws_ecr_repository" "dev_repo" {
+  name                 = "dev-repo"
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+}
