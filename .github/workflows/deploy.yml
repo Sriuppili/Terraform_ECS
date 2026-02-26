@@ -31,10 +31,13 @@ jobs:
 
  # ✅ STEP 1 — Create only infra (ECR + VPC + Cluster)
       - name: Terraform Apply Infra Only
-        run: terraform apply -target=module.vpc \
-                             -target=module.ecs.aws_ecr_repository \
-                             -target=module.ecs.aws_ecs_cluster \
-                             -auto-approve       
+        run: |
+          terraform apply \
+            -target=module.vpc \
+            -target=module.ecs.aws_ecr_repository \
+            -target=module.ecs.aws_ecs_cluster \
+            -auto-approve
+
 
 #      - name: Terraform Apply
 #        run: terraform apply -auto-approve
