@@ -1,9 +1,9 @@
-#terraform {
-#  backend "s3" {
-#    bucket       = "ecs-terraform-state" 
-#    key          = "ecs/terraform"
-#    region       = var.region_name
-#    use_lockfile = true
+terraform {
+ backend "s3" {
+    bucket       = "exc-ecs-terraform-state" 
+    key          = "ecs/terraform"
+    region       = "ap-southeast-1"
+    use_lockfile = true
 
-#  }
-#}
+  }
+}
