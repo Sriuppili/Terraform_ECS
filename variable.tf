@@ -8,7 +8,7 @@ variable "private_subnet_cidr" {
     default = "10.0.1.0/24"
 }
 variable "region_name" {
-    default = "ap-south-1"
+    default = "ap-southeast-1"
 }
 variable "image" {
     type = string
