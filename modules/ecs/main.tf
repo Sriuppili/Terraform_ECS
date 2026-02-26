@@ -87,14 +87,14 @@ resource "aws_ecs_task_definition" "webapp" {
   family                   = "webapp"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  cpu                      = "256"
-  memory                   = "512"
+  cpu                      = "1024"
+  memory                   = "1024"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = jsonencode([
     {
       name  = "webapp"
-#     image = "<account-id>.dkr.ecr.<region>.amazonaws.com/repo-name:tag"          # need to give ECR URL here
+      image = var.image         # need to give ECR URL here
       portMappings = [
         {
           containerPort = 80
@@ -128,7 +128,7 @@ resource "aws_ecs_service" "app-service" {
 
 # temporarliy creatin ECR here, will move to separate module later
 resource "aws_ecr_repository" "dev_repo" {
-  name                 = "dev-repo"
+  name                 = "dev_repo"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
