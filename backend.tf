@@ -4,6 +4,6 @@ terraform {
     key          = "ecs/terraform"
     region       = "ap-southeast-1"
     use_lockfile = true
-
+    
   }
 }
