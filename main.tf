@@ -10,8 +10,8 @@ module "vpc" {
 module "ecs" {
     source = "./modules/ecs"
     vpc_id = module.vpc.vpc_id
-    public_subnet_id_1 = module.vpc.public_subnet_id_1
-    public_subnet_id_2 = module.vpc.public_subnet_id_2
+    public_subnet_1_id = module.vpc.public_1.id    
+    public_subnet_2_id = module.vpc.public_2.id
     private_subnet_id = module.vpc.private_subnet_id
     image = var.image
 }
