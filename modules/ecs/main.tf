@@ -135,5 +135,3 @@ resource "aws_ecr_repository" "dev_repo" {
     scan_on_push = true
   }
 }
-
-l
