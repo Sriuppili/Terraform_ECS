@@ -30,7 +30,7 @@ namespace SynergyApplicationFrameworkApi.Controllers
         /// <summary>
         /// Retrospectively adds an asset to a wash batch.
         /// </summary>
-        /// <param name="requestDataContract">The data contract containing the necessary information for adding to the wash batch.</param>
+        /// <param name="requestDataContract">The data contract containing the details for adding to the wash batch.</param>
         /// <returns>A <see cref="ScanAssetDataContract"/> representing the result of the operation.</returns>
         [HttpPost("RetrospectiveAddToWashBatch")]
         [ProducesResponseType(typeof(ScanAssetDataContract), StatusCodes.Status200OK)]
@@ -38,8 +38,6 @@ namespace SynergyApplicationFrameworkApi.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ScanAssetDataContract>> RetrospectiveAddToWashBatch([FromBody] AddToWashBatchDataContract requestDataContract)
         {
-            _logger.LogInformation("RetrospectiveAddToWashBatch endpoint called.");
-
             if (requestDataContract == null)
             {
                 _logger.LogError("RetrospectiveAddToWashBatch: Request data contract is null.");
@@ -49,24 +47,24 @@ namespace SynergyApplicationFrameworkApi.Controllers
             try
             {
                 var result = await _synergyTrakService.RetrospectiveAddToWashBatch(requestDataContract);
+
                 if (result == null)
                 {
-                    _logger.LogWarning("RetrospectiveAddToWashBatch: Service returned null.");
+                    _logger.LogWarning("RetrospectiveAddToWashBatch: Service returned null result.");
                     return NotFound(); // Or another appropriate status code
                 }
 
                 if (result.ErrorCode.HasValue)
                 {
-                    _logger.LogError($"RetrospectiveAddToWashBatch: Error occurred. ErrorCode: {result.ErrorCode}, Message: {result.Message}");
-                    return BadRequest(result); // Or another appropriate status code based on the error
+                    _logger.LogError($"RetrospectiveAddToWashBatch: Service returned error code: {result.ErrorCode}, Message: {result.Message}");
+                    return BadRequest(result); // Or another appropriate status code based on the error code
                 }
 
-                _logger.LogInformation("RetrospectiveAddToWashBatch endpoint completed successfully.");
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"RetrospectiveAddToWashBatch: An unexpected error occurred: {ex.Message}");
+                _logger.LogError(ex, "RetrospectiveAddToWashBatch: An unexpected error occurred.");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An unexpected error occurred.");
             }
         }

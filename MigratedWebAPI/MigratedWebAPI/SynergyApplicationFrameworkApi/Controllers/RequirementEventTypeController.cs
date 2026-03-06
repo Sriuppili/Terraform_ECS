@@ -117,7 +117,7 @@ namespace SynergyApplicationFrameworkApi.Controllers
         /// </summary>
         /// <param name="id">The ID of the Service Requirement Event Type to update.</param>
         /// <param name="serviceRequirementEventTypeDto">The ServiceRequirementEventTypeDTO containing the updated data.</param>
-        /// <returns>An ActionResult indicating success or failure.</returns>
+        /// <returns>An IActionResult indicating success or failure.</returns>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -149,6 +149,7 @@ namespace SynergyApplicationFrameworkApi.Controllers
                 }
 
                 await _serviceRequirementEventTypeService.UpdateAsync(serviceRequirementEventTypeDto);
+
                 return NoContent();
             }
             catch (Exception ex)
@@ -162,7 +163,7 @@ namespace SynergyApplicationFrameworkApi.Controllers
         /// Deletes a Service Requirement Event Type by its ID.
         /// </summary>
         /// <param name="id">The ID of the Service Requirement Event Type to delete.</param>
-        /// <returns>An ActionResult indicating success or failure.</returns>
+        /// <returns>An IActionResult indicating success or failure.</returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -181,6 +182,7 @@ namespace SynergyApplicationFrameworkApi.Controllers
                 }
 
                 await _serviceRequirementEventTypeService.DeleteAsync(id);
+
                 return NoContent();
             }
             catch (Exception ex)

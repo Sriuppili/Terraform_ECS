@@ -1,4 +1,4 @@
-using SynergyApplicationFrameworkApi.Application.DTOsContracts.Transfer;
+using SynergyApplicationFrameworkApi.Application.DTOs.Transfer;
 using SynergyApplicationFrameworkApi.Application.Services;
 using System;
 using System.Collections.Generic;

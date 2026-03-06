@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using SynergyApplicationFrameworkApi.Application.Interfaces;
+using SynergyApplicationFrameworkApi.Application.DTOs;
+using System.ServiceModel;
+
 
 namespace SynergyApplicationFrameworkApi.Application.Services
 {
@@ -10,7 +14,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
     /// Service Exception manager
     /// </summary>
     /// <remarks></remarks>
-    internal class ServiceExceptionManager
+    internal class ServiceExceptionManager : IPathwayExceptionManager
     {
         private static readonly Lazy<IPathwayExceptionManager> Lazy =
             new Lazy<IPathwayExceptionManager>(() => new ServiceExceptionManager());
@@ -93,9 +97,9 @@ namespace SynergyApplicationFrameworkApi.Application.Services
             else
             {
                 _exceptionHandler.HandleException(exception);
-                var faultContract = new BasicFaultContract(string.Empty, ErrorMessage.UnknownError); 
+                var faultContract = new BasicFaultContract(string.Empty, "Unknown error occurred"); 
 
-                throw new FaultException<BasicFaultContract>(faultContract, new FaultReason(ErrorMessage.UnknownError));
+                throw new FaultException<BasicFaultContract>(faultContract, new FaultReason("Unknown error occurred."));
             }
         }
         #endregion

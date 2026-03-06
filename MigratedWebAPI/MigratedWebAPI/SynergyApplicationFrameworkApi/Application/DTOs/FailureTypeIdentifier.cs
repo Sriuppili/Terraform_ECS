@@ -3,168 +3,170 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+using System.ComponentModel;
 
 namespace SynergyApplicationFrameworkApi.Application.DTOs
 {
     public enum FailureTypeIdentifier
     {
-        [EnumMember]
+        [EnumMember(Value = "Missing Item")]
         [Description("Missing Item")]
         MissingItem = 1,
 
-        [EnumMember]
+        [EnumMember(Value = "Damaged Wraps")]
         [Description("Damaged Wraps")]
         DamagedWraps = 2,
 
-        [EnumMember]
+        [EnumMember(Value = "Incorrect Assembly")]
         [Description("Incorrect Assembly")]
         IncorrectAssembly = 3,
 
-        [EnumMember]
+        [EnumMember(Value = "Late Supply")]
         [Description("Late Supply")]
         LateSupply = 4,
 
-        [EnumMember]
+        [EnumMember(Value = "Extra Item on Tray")]
         [Description("Extra Item on Tray")]
         ExtraItemonTray = 5,
 
-        [EnumMember]
+        [EnumMember(Value = "Dirty Item")]
         [Description("Dirty Item")]
         DirtyItem = 6,
 
-        [EnumMember]
+        [EnumMember(Value = "Incorrect Packing Specification")]
         [Description("Incorrect Packing Specification")]
         IncorrectPackingSpecification = 7,
 
-        [EnumMember]
+        [EnumMember(Value = "Other")]
         [Description("Other")]
         Other = 8,
 
-        [EnumMember]
+        [EnumMember(Value = "Wrong Item on Tray")]
         [Description("Wrong Item on Tray")]
         WrongItemonTray = 9,
 
-        [EnumMember]
+        [EnumMember(Value = "Wet Pack/Tray")]
         [Description("Wet Pack/Tray")]
         WetPackOrTray = 10,
 
-        [EnumMember]
+        [EnumMember(Value = "Incorrect Labelling")]
         [Description("Incorrect Labelling")]
         IncorrectLabelling = 11,
 
-        [EnumMember]
+        [EnumMember(Value = "Damaged Item")]
         [Description("Damaged Item")]
         DamagedItem = 12,
 
-        [EnumMember]
+        [EnumMember(Value = "Worn Item")]
         [Description("Worn Item")]
         WornItem = 13,
 
-        [EnumMember]
+        [EnumMember(Value = "Poststeam Failure")]
         [Description("Poststeam Failure")]
         PoststeamFailure = 14,
 
-        [EnumMember]
+        [EnumMember(Value = "Presteam Failure")]
         [Description("Presteam Failure")]
         PresteamFailure = 15,
 
-        [EnumMember]
+        [EnumMember(Value = "Item requires repair")]
         [Description("Item requires repair")]
         Itemrequiresrepair = 16,
 
-        [EnumMember]
+        [EnumMember(Value = "Alternative Item")]
         [Description("Alternative Item")]
         AlternativeItem = 17,
 
-        [EnumMember]
+        [EnumMember(Value = "Item Returned From Repair")]
         [Description("Item Returned From Repair")]
         ItemReturnedFromRepair = 18,
 
-        [EnumMember]
+        [EnumMember(Value = "Item Sent To Repair")]
         [Description("Item Sent To Repair")]
         ItemSentToRepair = 19,
 
-        [EnumMember]
+        [EnumMember(Value = "Gross Debris")]
         [Description("Gross Debris")]
         GrossDebris = 20,
 
-        [EnumMember]
+        [EnumMember(Value = "Repatriation")]
         [Description("Repatriation")]
         Repatriation = 21,
 
-        [EnumMember]
+        [EnumMember(Value = "CCN Change To Tray")]
         [Description("CCN Change To Tray")]
         CCNChangeToTray = 22,
 
-        [EnumMember]
+        [EnumMember(Value = "Technician Error")]
         [Description("Technician Error")]
         TechnicianError = 23,
 
-        [EnumMember]
+        [EnumMember(Value = "No Issues With Tray")]
         [Description("No Issues With Tray")]
         NoIssuesWithTray = 24,
 
-        [EnumMember]
+        [EnumMember(Value = "Unknown (different technician)")]
         [Description("Unknown (different technician)")]
         UnknownDifferentTechnician = 25,
 
-        [EnumMember]
+        [EnumMember(Value = "AER Disinfection Failure")]
         [Description("AER Disinfection Failure")]
         AerDisinfectionFailure = 50,
 
-        [EnumMember]
+        [EnumMember(Value = "AER Test Failure")]
         [Description("AER Test Failure")]
         AerTestFailure = 51,
 
-        [EnumMember]
+        [EnumMember(Value = "AER Error")]
         [Description("AER Error")]
         AerError = 52,
 
-        [EnumMember]
+        [EnumMember(Value = "Blockage In Scope")]
         [Description("Blockage In Scope")]
         BlockageInScope = 53,
 
-        [EnumMember]
+        [EnumMember(Value = "Leak Test")]
         [Description("Leak Test")]
         LeakTest = 54,
 
-        [EnumMember]
+        [EnumMember(Value = "Out Of Detergent")]
         [Description("Out Of Detergent")]
         OutOfDetergent = 55,
 
-        [EnumMember]
+        [EnumMember(Value = "Scope Connection Error")]
         [Description("Scope Connection Error")]
         ScopeConnectionError = 56,
 
-        [EnumMember]
+        [EnumMember(Value = "Missing Button")]
         [Description("Missing Button")]
         MissingButton = 57,
 
-        [EnumMember]
+        [EnumMember(Value = "Damaged Button")]
         [Description("Damaged Button")]
         DamagedButton = 58,
 
-        [EnumMember]
+        [EnumMember(Value = "Damaged Scope")]
         [Description("Damaged Scope")]
         DamagedScope = 59,
 
-        [EnumMember]
+        [EnumMember(Value = "Leak Test Failed")]
         [Description("Leak Test Failed")]
         LeakTestFailed = 60,
 
-        [EnumMember]
+        [EnumMember(Value = "Unable To Clean")]
         [Description("Unable To Clean")]
         UnableToClean = 61,
 
-        [EnumMember]
+        [EnumMember(Value = "Clean Failed")]
         [Description("Clean Failed")]
         CleanFailed = 62,
 
-        [EnumMember]
+        [EnumMember(Value = "Post Non Steam Failure")]
         [Description("Post Non Steam Failure")]
         PostNonSteamFailure = 63,
 
-        [EnumMember]
+        [EnumMember(Value = "Pre Non Steam Failure")]
         [Description("Pre Non Steam Failure")]
         PreNonSteamFailure = 64
     }

@@ -4,13 +4,14 @@ using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 
 namespace SynergyApplicationFrameworkApi.Infrastructure.Repositories
 {
     /// <summary>
     /// PathwayWarehouseRepository,
     /// </summary>
-    public class PathwayWarehouseRepository, IDisposable
+    public class PathwayWarehouseRepository : IDisposable
     {
         internal class Constants
         {
@@ -35,6 +36,7 @@ namespace SynergyApplicationFrameworkApi.Infrastructure.Repositories
         {
             using (var connection = new SqlConnection(connectionString))
             {
+                connection.Open();
                 using (var command = new SqlCommand(Constants.Procedures.TargetTimeModes, connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
@@ -61,7 +63,9 @@ namespace SynergyApplicationFrameworkApi.Infrastructure.Repositories
             if (modes == null || modes.Count == 0)
                 return;
 
+            using (var connection = new SqlConnection(connectionString))
             {
+                using (var command = new SqlCommand(Constants.Procedures.TargetTimeModes, connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@ContainerMasterDefinitionId", containerMasterDefinitionId).SqlDbType = SqlDbType.Int;
@@ -80,8 +84,6 @@ namespace SynergyApplicationFrameworkApi.Infrastructure.Repositories
         /// </summary>
         public static DataTable ConvertTo(IEnumerable<ProcessGroupMode> modes)
         {
-            var obj = new ProcessGroupMode();
-
             var data = new DataTable();
             data.Columns.Add(Constants.Args.PrtGroupId, typeof(int));
             data.Columns.Add(Constants.Args.Override, typeof(bool));
@@ -125,5 +127,12 @@ namespace SynergyApplicationFrameworkApi.Infrastructure.Repositories
         public void Dispose()
         {
         }
+    }
+
+    public class ProcessGroupMode
+    {
+        public int ProcessGroupId { get; set; }
+        public bool Overridden { get; set; }
+        public string Name { get; set; } = "";
     }
 }

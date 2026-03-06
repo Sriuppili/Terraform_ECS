@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
+using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Pathway.DataContracts")]
 [assembly: AssemblyKeyFileAttribute("Pathway.CommonObjects.snk")]
 [assembly: ComVisible(false)]

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using SynergyApplicationFrameworkApi.Application.Printing.Resources;
+using SynergyApplicationFrameworkApi.Application.Services.Resources;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;

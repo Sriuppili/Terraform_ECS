@@ -1,14 +1,15 @@
+using SynergyApplicationFrameworkApi.Application.DTOs;
 using SynergyApplicationFrameworkApi.Application.Services.DataContracts;
-using SynergyApplicationFrameworkApi.Application.Services.Stations.DataContracts;
-using SynergyApplicationFrameworkApi.Application.Services.Website.DataContracts;
-using SynergyApplicationFrameworkApi.Application.Services.Website.DataContracts.Search;
-using SynergyApplicationFrameworkApi.Application.Services.Website.DataContracts.TrayBuilder;
+using SynergyApplicationFrameworkApi.Application.DTOs;
+using SynergyApplicationFrameworkApi.Application.DTOs.Search;
+using SynergyApplicationFrameworkApi.Application.DTOs.TrayBuilder;
 using System.Collections.Generic;
-using DataFilter = Synergy.Core.Data.DataFilter;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using Synergy.Core.Data;
+using System.ServiceModel;
 
 namespace SynergyApplicationFrameworkApi.Application.Interfaces
 {
@@ -168,7 +169,8 @@ namespace SynergyApplicationFrameworkApi.Application.Interfaces
         /// </summary>
         /// <param name="containerMasterId"></param>
         /// <returns></returns>
-        [OperationContract] [FaultContract(typeof (BasicFaultContract))] 
+        [OperationContract]
+        [FaultContract(typeof(BasicFaultContract))]
         bool IsContainerMasterArchivable(int containerMasterId);
 
         /// <summary>
@@ -179,7 +181,7 @@ namespace SynergyApplicationFrameworkApi.Application.Interfaces
         /// <param name="createdUserId"></param>
         /// <param name="isAdd"></param>
         /// <returns></returns>
-        int AddContainerContentsToContainerMaster(IList<ContainerContentData> components, int containermasterId, int createdUserId,bool isAdd);
+        int AddContainerContentsToContainerMaster(IList<ContainerContentData> components, int containermasterId, int createdUserId, bool isAdd);
 
         /// <summary>
         /// Method to remove container content form ContainerMaster
@@ -218,7 +220,7 @@ namespace SynergyApplicationFrameworkApi.Application.Interfaces
         /// <param name="createdUserId"></param>
         /// <param name="containerContentIds"></param>
         /// <returns></returns>
-        int MoveComponents(List<int> containerContentIds,bool isUp, int containermasterid, int createdUserId);
+        int MoveComponents(List<int> containerContentIds, bool isUp, int containermasterid, int createdUserId);
 
         /// <summary>
         /// Unarchive the instance.
@@ -227,7 +229,7 @@ namespace SynergyApplicationFrameworkApi.Application.Interfaces
         /// <param name="userId">The user id.</param>
         /// <returns></returns>
         OperationResponseContract UnArchiveInstance(int instanceId, int userId, int? deliveryPointId, int? serviceRequirementDefinitionId);
-        
+
         /// <summary>
         /// Method to get deleted item type active item summaray details for a facility
         /// </summary>
@@ -243,7 +245,7 @@ namespace SynergyApplicationFrameworkApi.Application.Interfaces
         /// <param name="containerInstanceId">Id for a Container Instance</param>
         /// <returns></returns>        
         IList<ItemMasterAliasData> ReadAliasByContainerInstance(short facilityId, int containerInstanceId);
-        
+
         /// <summary>
         /// To retrieve item master Alias by facility id and Item Master Definition id
         /// </summary>
@@ -251,7 +253,7 @@ namespace SynergyApplicationFrameworkApi.Application.Interfaces
         /// <param name="itemMasterId">Id for a Item Master Definition</param>
         /// <returns></returns>        
         IList<ItemMasterAliasData> ReadAliasByItemMasterDefinition(short facilityId, int itemMasterDefinitionId);
-        
+
         /// <summary>
         /// To retrieve item master Alias by facility id and Container Master Definition id
         /// </summary>
@@ -287,7 +289,7 @@ namespace SynergyApplicationFrameworkApi.Application.Interfaces
         /// <returns></returns>
         int UpdateItemMasterAlias(IList<int> itemMasterDefinitionId, IList<int> customerDefinitionId, IList<int> deliveryPointId, int? containerInstanceId, int? containerMasterDefinitionId, string aliasName);
 
-         /// <summary>
+        /// <summary>
         /// Read item master alias for the given criteria
         /// </summary>
         /// <param name="facilityId"></param>
@@ -296,9 +298,9 @@ namespace SynergyApplicationFrameworkApi.Application.Interfaces
         /// <param name="customerDefnitionId"></param>
         /// <param name="customerGroupId"></param>
         /// <returns></returns>
-        IList<ItemMasterAliasData> ReadItemMasterAlias(int? itemMasterDefinitionId,int? customerDefnitionId, int? customerGroupId, short facilityId, DataFilter filter);
+        IList<ItemMasterAliasData> ReadItemMasterAlias(int? itemMasterDefinitionId, int? customerDefnitionId, int? customerGroupId, short facilityId, DataFilter filter);
 
-         /// <summary>
+        /// <summary>
         /// Reads customer data for the given item master
         /// </summary>
         /// <param name="facilityId"></param>
@@ -326,15 +328,15 @@ namespace SynergyApplicationFrameworkApi.Application.Interfaces
         /// <param name="aliasText"></param>
         /// <param name="createdUserId"></param>
         /// <returns></returns>
-        int SaveItemMasterAlias(int itemMasterDefinitionId, int? customerDefnitionId, int? customerGroupId,string aliasText, int createdUserId);
-        
+        int SaveItemMasterAlias(int itemMasterDefinitionId, int? customerDefnitionId, int? customerGroupId, string aliasText, int createdUserId);
+
         /// <summary>
         /// Method to get Item Alias data
         /// </summary>
         /// <param name="itemMasterAliasId"></param>
         /// <returns></returns>
         ItemMasterAliasData GetItemAliasDetails(int itemMasterAliasId);
-        
+
         /// <summary>
         /// Method to delete the item master alias id
         /// </summary>
@@ -424,7 +426,7 @@ namespace SynergyApplicationFrameworkApi.Application.Interfaces
         string GetItemTitle(int definitionId, MasterType masterType);
         #endregion
 
-         /// <summary>
+        /// <summary>
         /// Checking outstanding orders for the Container Master Definition
         /// </summary>
         /// <param name="containerMasterDefinitionId"></param>
@@ -476,7 +478,7 @@ namespace SynergyApplicationFrameworkApi.Application.Interfaces
         /// </summary>
         /// <param name="containerInstanceId">The container to obtain item instances for.</param>
         /// <returns>A collection of Item Instances.</returns>
-        IList<Stations.DataContracts.ItemInstanceData> GetItemInstancesWithIdentifiers(int containerInstanceId);
+        IList<ItemInstanceData> GetItemInstancesWithIdentifiers(int containerInstanceId);
 
         /// <summary>
         /// Prints item instance list.
@@ -490,7 +492,7 @@ namespace SynergyApplicationFrameworkApi.Application.Interfaces
         string CreateItemInstance(int itemMasterDefinitionId, int identifierType, string identValue, int createdUserId, int ownerId);
         bool ItemInstanceIdentExists(string identifer, int identifierType, int itemMasterDefinitionId);
         OperationResponseContract ChangeItemMasterForItemInstance(int itemInstanceId, int itemMasterDefinitionId, int userId);
-        Stations.DataContracts.ItemInstanceData GetItemInstance(int itemInstanceId);
+        ItemInstanceData GetItemInstance(int itemInstanceId);
         ItemMasterData ReadItemMasterByItemInstance(int itemInstanceId);
         int GetItemInstancesCountByItemMaster(int itemMasterDefinitionId, int facilityId);
         bool HasItemInstanceCatalogueAccess(int itemMasterDefinitionId, int facilityId);
@@ -538,6 +540,6 @@ namespace SynergyApplicationFrameworkApi.Application.Interfaces
         int? GetBlueprintContainerMasterIdByContainerMasterId(int containerMasterId);
         int? GetBlueprintContainerMasterDefinitionIdByContainerMasterDefinitionId(int containerMasterDefinitionId);
         int? GetBlueprintItemMasterIdByItemMasterId(int itemMasterId);
-        int? GetBlueprintItemMasterDefinitionIdByItemMasterDefinitionId(int itemMasterDefinitionId);
+        int? GetBlueprintItemMasterDefinitionIdByContainerMasterDefinitionId(int containerMasterDefinitionId);
     }
 }

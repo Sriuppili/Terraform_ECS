@@ -1,36 +1,30 @@
 using System;
 using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace SynergyApplicationFrameworkApi.Application.DTOs
 {
-    /// <summary>
-    /// Action filter to force bad request on model invalid.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-    /// <summary>
-    /// BadRequestOnModelInvalidAttribute
-    /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class BadRequestOnModelInvalidAttribute : ActionFilterAttribute
     {
-        /// <summary>
-        /// OnActionExecuting operation
-        /// </summary>
-        public override void OnActionExecuting(HttpActionContext actionContext)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var modelState = actionContext.ModelState;
-            if (modelState != null && !modelState.IsValid)
+            if (!context.ModelState.IsValid)
             {
-                var errors = modelState.Values.Select(valueBinder => "Value: {0}, Errors : {1}".FormatWith(valueBinder.Value, string.Join(", ", valueBinder.Errors.Select(e => e.Exception == null ? e.ErrorMessage : e.Exception.Message).ToArray()))).ToList();
+                var errors = context.ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
 
-                var concat = string.Join(",", errors);
-                
-                actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Services.Constants.General.Errors.InvalidBody + " : {0} ({1})".FormatWith(concat, errors.Count));
+                context.Result = new BadRequestObjectResult(new
+                {
+                    Message = "Invalid request body",
+                    Errors = errors
+                });
             }
 
-            base.OnActionExecuting(actionContext);
+            base.OnActionExecuting(context);
         }
     }
 }

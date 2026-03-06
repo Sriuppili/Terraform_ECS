@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace SynergyApplicationFrameworkApi.Application.DTOs
 {
@@ -339,7 +340,7 @@ namespace SynergyApplicationFrameworkApi.Application.DTOs
         [EnumMember]
         CreatePriceCategoryGroup = 280,
         [EnumMember]
-        CreatePrinter = 281,      
+        CreatePrinter = 281,
         [EnumMember]
         CreateStation = 282,
         [EnumMember]
@@ -356,7 +357,7 @@ namespace SynergyApplicationFrameworkApi.Application.DTOs
         CreateUserFacility = 288,
         [EnumMember]
         CreateWarning = 289,
-        
+
         #endregion
 
         #region Update
@@ -456,7 +457,7 @@ namespace SynergyApplicationFrameworkApi.Application.DTOs
         [EnumMember]
         CreateUpdateStockManagement = 347,
         [EnumMember]
-        CreateMaintenanceVendor =349,
+        CreateMaintenanceVendor = 349,
         [EnumMember]
         UpdateMaintenanceVendor = 350,
         [EnumMember]
@@ -471,7 +472,7 @@ namespace SynergyApplicationFrameworkApi.Application.DTOs
         PackingReviewer = 600,
         [EnumMember]
         OverridePause = 900,
-        
+
         [EnumMember]
         ClockOutUser = 1000,
 
@@ -632,23 +633,39 @@ namespace SynergyApplicationFrameworkApi.Application.DTOs
         #endregion
 
         #region SignalR
-        [EnumMember] SignalR_Admin = 1400,
-        [EnumMember] SignalR_User = 1401,
-        [EnumMember] SignalR_Status = 1402,
-        [EnumMember] SignalR_Hangfire = 1403,
-        [EnumMember] SignalR_MessagingView = 1404,
-        [EnumMember] SignalR_MessagingCompose = 1405,
-        [EnumMember] SignalR_MessagingEdit = 1406,
-        [EnumMember] SignalR_Connections = 1407,
-        [EnumMember] SignalR_SecretKeys = 1408,
+        [EnumMember]
+        SignalR_Admin = 1400,
+        [EnumMember]
+        SignalR_User = 1401,
+        [EnumMember]
+        SignalR_Status = 1402,
+        [EnumMember]
+        SignalR_Hangfire = 1403,
+        [EnumMember]
+        SignalR_MessagingView = 1404,
+        [EnumMember]
+        SignalR_MessagingCompose = 1405,
+        [EnumMember]
+        SignalR_MessagingEdit = 1406,
+        [EnumMember]
+        SignalR_Connections = 1407,
+        [EnumMember]
+        SignalR_SecretKeys = 1408,
 
-        [EnumMember] SignalR_API = 1450,
-        [EnumMember] SignalR_API_BroadcastToAll = 1451,
-        [EnumMember] SignalR_API_BroadcastToFacility = 1452,
-        [EnumMember] SignalR_API_BroadcastToUser = 1453,
-        [EnumMember] SignalR_API_BroadcastToStation = 1454,
-        [EnumMember] SignalR_API_GetUserMessages = 1455,
-        [EnumMember] SignalR_API_MessageBasic = 1456,
+        [EnumMember]
+        SignalR_API = 1450,
+        [EnumMember]
+        SignalR_API_BroadcastToAll = 1451,
+        [EnumMember]
+        SignalR_API_BroadcastToFacility = 1452,
+        [EnumMember]
+        SignalR_API_BroadcastToUser = 1453,
+        [EnumMember]
+        SignalR_API_BroadcastToStation = 1454,
+        [EnumMember]
+        SignalR_API_GetUserMessages = 1455,
+        [EnumMember]
+        SignalR_API_MessageBasic = 1456,
         #endregion
 
         [EnumMember]

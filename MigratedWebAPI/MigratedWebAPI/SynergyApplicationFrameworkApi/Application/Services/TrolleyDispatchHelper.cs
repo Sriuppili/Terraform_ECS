@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using SynergyApplicationFrameworkApi.Application.DTOsContracts.Scan;
+using SynergyApplicationFrameworkApi.Application.DTOs.Scan;
 using System;
 using SynergyApplicationFrameworkApi.Application.Services.TurnaroundProcessing;
 using System.Threading.Tasks;

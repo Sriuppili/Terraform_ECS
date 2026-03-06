@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace SynergyApplicationFrameworkApi.Application.Services
 {

@@ -1,4 +1,4 @@
-using SynergyApplicationFrameworkApi.Application.DTOsContracts.ItemExceptions;
+using SynergyApplicationFrameworkApi.Application.DTOs.ItemExceptions;
 using System.Collections.Generic;
 using System;
 using System.Linq;

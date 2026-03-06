@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+using System.ComponentModel;
 
 namespace SynergyApplicationFrameworkApi.Application.DTOs
 {
@@ -161,8 +163,8 @@ namespace SynergyApplicationFrameworkApi.Application.DTOs
         /// <summary>
         /// Enums greater than or equal to 1000 are reserved for user created values
         /// </summary>
-        /// [EnumMember]
-        /// [Description("User Created Values")]
-        /// UserCreatedValue = 1000++
+        //[EnumMember]
+        //[Description("User Created Values")]
+        //UserCreatedValue = 1000++ // Invalid syntax.  Cannot increment in declaration.
     }
 }

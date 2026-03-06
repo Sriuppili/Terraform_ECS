@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Text;
-using System.ComponentModel.DataAnnotations;
+using SynergyApplicationFrameworkApi.Entities;
+using SynergyApplicationFrameworkApi.DataContracts;
+using SynergyApplicationFrameworkApi.Domain;
 
 namespace SynergyApplicationFrameworkApi.Application.Services
 {
@@ -12,7 +12,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertCustomerToCustomerData operation
         /// </summary>
-        public static CustomerData ConvertCustomerToCustomerData(ICustomer customer)
+        public static CustomerData? ConvertCustomerToCustomerData(ICustomer? customer)
         {
             return customer == null ? null : new CustomerData(customer);
         }
@@ -20,7 +20,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertCustomerListToCustomersData operation
         /// </summary>
-        public static IList<CustomerData> ConvertCustomerListToCustomersData(IList<ICustomer> customers)
+        public static IList<CustomerData>? ConvertCustomerListToCustomersData(IList<ICustomer>? customers)
         {
             if (customers == null)
             {
@@ -29,11 +29,11 @@ namespace SynergyApplicationFrameworkApi.Application.Services
             IList<CustomerData> customerDataList = customers.Select(ConvertCustomerToCustomerData).ToList();
             return customerDataList;
         }
-        
+
         /// <summary>
         /// ConvertDeliveryPointToDeliveryPointData operation
         /// </summary>
-        public static DeliveryPointData ConvertDeliveryPointToDeliveryPointData(IDeliveryPoint deliveryPoint)
+        public static DeliveryPointData? ConvertDeliveryPointToDeliveryPointData(IDeliveryPoint? deliveryPoint)
         {
             if (deliveryPoint == null)
             {
@@ -45,8 +45,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertDeliveryPointsListToDeliveryPointsData operation
         /// </summary>
-        public static IList<DeliveryPointData> ConvertDeliveryPointsListToDeliveryPointsData(
-            IList<IDeliveryPoint> deliveryPoints)
+        public static IList<DeliveryPointData>? ConvertDeliveryPointsListToDeliveryPointsData(
+            IList<IDeliveryPoint>? deliveryPoints)
         {
             if (deliveryPoints == null)
             {
@@ -56,12 +56,12 @@ namespace SynergyApplicationFrameworkApi.Application.Services
                 deliveryPoints.Select(ConvertDeliveryPointToDeliveryPointData).ToList();
             return customerDataList;
         }
-        
+
         /// <summary>
         /// ConvertServiceRequirementToServiceRequirementData operation
         /// </summary>
-        public static ServiceRequirementData ConvertServiceRequirementToServiceRequirementData(
-            IServiceRequirement serviceRequirement)
+        public static ServiceRequirementData? ConvertServiceRequirementToServiceRequirementData(
+            IServiceRequirement? serviceRequirement)
         {
             return serviceRequirement == null ? null : new ServiceRequirementData(serviceRequirement);
         }
@@ -69,8 +69,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertServiceRequirementListToServiceRequirementsData operation
         /// </summary>
-        public static IList<ServiceRequirementData> ConvertServiceRequirementListToServiceRequirementsData(
-            IList<IServiceRequirement> serviceRequirements)
+        public static IList<ServiceRequirementData>? ConvertServiceRequirementListToServiceRequirementsData(
+            IList<IServiceRequirement>? serviceRequirements)
         {
             if (serviceRequirements == null)
             {
@@ -85,7 +85,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertFacilityNoteToFacilityNoteData operation
         /// </summary>
-        public static FacilityNoteData ConvertFacilityNoteToFacilityNoteData(IFacilityNote facilityNote)
+        public static FacilityNoteData? ConvertFacilityNoteToFacilityNoteData(IFacilityNote? facilityNote)
         {
             if (facilityNote == null)
             {
@@ -97,7 +97,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertContainerMasterToContainerMasterData operation
         /// </summary>
-        public static ContainerMasterData ConvertContainerMasterToContainerMasterData(IContainerMaster containerMaster)
+        public static ContainerMasterData? ConvertContainerMasterToContainerMasterData(IContainerMaster? containerMaster)
         {
             if (containerMaster == null)
             {
@@ -109,7 +109,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertEventTypeToEventTypeData operation
         /// </summary>
-        public static EventTypeData ConvertEventTypeToEventTypeData(IEventType eventType)
+        public static EventTypeData? ConvertEventTypeToEventTypeData(IEventType? eventType)
         {
             if (eventType == null)
             {
@@ -121,7 +121,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertEventTypesToEventTypesData operation
         /// </summary>
-        public static IList<EventTypeData> ConvertEventTypesToEventTypesData(IList<IEventType> eventTypes)
+        public static IList<EventTypeData>? ConvertEventTypesToEventTypesData(IList<IEventType>? eventTypes)
         {
             if (eventTypes == null)
             {
@@ -134,7 +134,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertMachineToMachineData operation
         /// </summary>
-        public static MachineData ConvertMachineToMachineData(IMachine machine)
+        public static MachineData? ConvertMachineToMachineData(IMachine? machine)
         {
             return machine == null ? null : new MachineData(machine);
         }
@@ -142,7 +142,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertMachineToMachineData operation
         /// </summary>
-        public static MachineData ConvertMachineToMachineData(IMachine machine, MachineEventData machineEvent)
+        public static MachineData? ConvertMachineToMachineData(IMachine? machine, MachineEventData? machineEvent)
         {
             return machine == null ? null : new MachineData(machine, machineEvent);
         }
@@ -150,7 +150,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertMachineListToMachinesData operation
         /// </summary>
-        public static IList<MachineData> ConvertMachineListToMachinesData(IList<IMachine> machines)
+        public static IList<MachineData>? ConvertMachineListToMachinesData(IList<IMachine>? machines)
         {
             if (machines == null)
             {
@@ -163,8 +163,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertMachineEventTypeToMachineEventTypeData operation
         /// </summary>
-        public static MachineEventTypeData ConvertMachineEventTypeToMachineEventTypeData(
-            IMachineEventType machineEventType)
+        public static MachineEventTypeData? ConvertMachineEventTypeToMachineEventTypeData(
+            IMachineEventType? machineEventType)
         {
             return machineEventType == null ? null : new MachineEventTypeData(machineEventType);
         }
@@ -172,8 +172,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertMachineEventTypeListToMachineEventTypesData operation
         /// </summary>
-        public static IList<MachineEventTypeData> ConvertMachineEventTypeListToMachineEventTypesData(
-            IList<IMachineEventType> machineEventTypes)
+        public static IList<MachineEventTypeData>? ConvertMachineEventTypeListToMachineEventTypesData(
+            IList<IMachineEventType>? machineEventTypes)
         {
             if (machineEventTypes == null)
             {
@@ -187,7 +187,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertMachineEventToMachineEventData operation
         /// </summary>
-        public static MachineEventData ConvertMachineEventToMachineEventData(IMachineEvent machineEvent)
+        public static MachineEventData? ConvertMachineEventToMachineEventData(IMachineEvent? machineEvent)
         {
             return machineEvent == null ? null : new MachineEventData(machineEvent);
         }
@@ -195,8 +195,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertMachineEventToMachineEventData operation
         /// </summary>
-        public static MachineEventData ConvertMachineEventToMachineEventData(IMachineEvent machineEvent,
-                                                                             MachineEventTypeData machineEventTypeData)
+        public static MachineEventData? ConvertMachineEventToMachineEventData(IMachineEvent? machineEvent,
+                                                                             MachineEventTypeData? machineEventTypeData)
         {
             return machineEvent == null ? null : new MachineEventData(machineEvent, machineEventTypeData);
         }
@@ -204,8 +204,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertMachineEventListToMachineEventsData operation
         /// </summary>
-        public static IList<MachineEventData> ConvertMachineEventListToMachineEventsData(
-            IList<IMachineEvent> machineEvents)
+        public static IList<MachineEventData>? ConvertMachineEventListToMachineEventsData(
+            IList<IMachineEvent>? machineEvents)
         {
             if (machineEvents == null)
             {
@@ -219,7 +219,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertMachineTypeToMachineTypeData operation
         /// </summary>
-        public static MachineTypeData ConvertMachineTypeToMachineTypeData(IMachineType machineType)
+        public static MachineTypeData? ConvertMachineTypeToMachineTypeData(IMachineType? machineType)
         {
             return machineType == null ? null : new MachineTypeData(machineType);
         }
@@ -227,7 +227,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertMachineTypeListToMachineTypesData operation
         /// </summary>
-        public static IList<MachineTypeData> ConvertMachineTypeListToMachineTypesData(IList<IMachineType> machineTypes)
+        public static IList<MachineTypeData>? ConvertMachineTypeListToMachineTypesData(IList<IMachineType>? machineTypes)
         {
             if (machineTypes == null)
             {
@@ -241,7 +241,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertBatchCycleToBatchCycleData operation
         /// </summary>
-        public static BatchCycleData ConvertBatchCycleToBatchCycleData(IBatchCycle batchCycle)
+        public static BatchCycleData? ConvertBatchCycleToBatchCycleData(IBatchCycle? batchCycle)
         {
             return batchCycle == null ? null : new BatchCycleData(batchCycle);
         }
@@ -249,7 +249,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertBatchCycleListToBatchCyclesData operation
         /// </summary>
-        public static IList<BatchCycleData> ConvertBatchCycleListToBatchCyclesData(IList<IBatchCycle> batchCycles)
+        public static IList<BatchCycleData>? ConvertBatchCycleListToBatchCyclesData(IList<IBatchCycle>? batchCycles)
         {
             if (batchCycles == null)
             {
@@ -262,8 +262,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertMachineEventReasonToMachineEventReasonData operation
         /// </summary>
-        public static MachineEventReasonData ConvertMachineEventReasonToMachineEventReasonData(
-            IMachineEventReason machineEventReason)
+        public static MachineEventReasonData? ConvertMachineEventReasonToMachineEventReasonData(
+            IMachineEventReason? machineEventReason)
         {
             return machineEventReason == null ? null : new MachineEventReasonData(machineEventReason);
         }
@@ -271,8 +271,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertMachineEventReasonListToMachineEventReasonsData operation
         /// </summary>
-        public static IList<MachineEventReasonData> ConvertMachineEventReasonListToMachineEventReasonsData(
-            IList<IMachineEventReason> machineEventReasons)
+        public static IList<MachineEventReasonData>? ConvertMachineEventReasonListToMachineEventReasonsData(
+            IList<IMachineEventReason>? machineEventReasons)
         {
             if (machineEventReasons == null)
             {
@@ -286,12 +286,12 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertBatchToBatchData operation
         /// </summary>
-        public static BatchData ConvertBatchToBatchData(IBatch batch)
+        public static BatchData? ConvertBatchToBatchData(IBatch? batch)
         {
             if (batch != null)
             {
                 var b = batch as Batch;
-                BatchCycle batcyCycle;
+                BatchCycle? batcyCycle;
                 string batchCycleName = string.Empty;
                 if (b != null)
                 {
@@ -309,7 +309,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertNoteToTurnaroundNoteData operation
         /// </summary>
-        public static TurnaroundNoteData ConvertNoteToTurnaroundNoteData(ITurnaroundNote note)
+        public static TurnaroundNoteData? ConvertNoteToTurnaroundNoteData(ITurnaroundNote? note)
         {
             return note == null ? null : new TurnaroundNoteData(note);
         }
@@ -317,7 +317,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertNotesToNotesData operation
         /// </summary>
-        public static IList<TurnaroundNoteData> ConvertNotesToNotesData(IList<ITurnaroundNote> notes)
+        public static IList<TurnaroundNoteData>? ConvertNotesToNotesData(IList<ITurnaroundNote>? notes)
         {
             if (notes == null)
             {
@@ -330,7 +330,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertItemNoteToItemTurnaroundNoteData operation
         /// </summary>
-        public static ContainerMasterNoteData ConvertItemNoteToItemTurnaroundNoteData(IContainerMasterNote itemNote)
+        public static ContainerMasterNoteData? ConvertItemNoteToItemTurnaroundNoteData(IContainerMasterNote? itemNote)
         {
             return itemNote == null ? null : new ContainerMasterNoteData(itemNote);
         }
@@ -338,8 +338,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertItemNotesToContainerMasterNoteData operation
         /// </summary>
-        public static IList<ContainerMasterNoteData> ConvertItemNotesToContainerMasterNoteData(
-            IList<IContainerMasterNote> itemNotes)
+        public static IList<ContainerMasterNoteData>? ConvertItemNotesToContainerMasterNoteData(
+            IList<IContainerMasterNote>? itemNotes)
         {
             if (itemNotes == null)
             {
@@ -353,7 +353,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertWarningToWarningData operation
         /// </summary>
-        public static WarningData ConvertWarningToWarningData(IWarning warning)
+        public static WarningData? ConvertWarningToWarningData(IWarning? warning)
         {
             return warning == null ? null : new WarningData(warning);
         }
@@ -361,7 +361,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertWarningsToWarningsData operation
         /// </summary>
-        public static IList<WarningData> ConvertWarningsToWarningsData(IList<IWarning> warnings)
+        public static IList<WarningData>? ConvertWarningsToWarningsData(IList<IWarning>? warnings)
         {
             if (warnings == null)
             {
@@ -374,8 +374,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertTurnaroundToTurnaroundData operation
         /// </summary>
-        public static TurnaroundData ConvertTurnaroundToTurnaroundData(IUnitOfWork workUnit,
-                                                                       ITurnaround genericTurnaround)
+        public static TurnaroundData? ConvertTurnaroundToTurnaroundData(IUnitOfWork workUnit,
+                                                                       ITurnaround? genericTurnaround)
         {
             IUtilityEventHandler utilityEventHandler = EventHandlerFactory.GetUtilityEventHandler(workUnit);
             if (genericTurnaround == null)
@@ -383,11 +383,11 @@ namespace SynergyApplicationFrameworkApi.Application.Services
                 return null;
             }
             var turnaround = (Turnaround)genericTurnaround;
-            ITurnaroundWH genericTurnaroundWH = utilityEventHandler.ReadTurnaroundWhByTurnaround(turnaround.TurnaroundId);
+            ITurnaroundWH? genericTurnaroundWH = utilityEventHandler.ReadTurnaroundWhByTurnaround(turnaround.TurnaroundId);
 
-            var turnaroundWH = (TurnaroundWH)genericTurnaroundWH;
+            var turnaroundWH = (TurnaroundWH?)genericTurnaroundWH;
 
-            TurnaroundData turnaroundData = null;
+            TurnaroundData? turnaroundData = null;
 
             if (turnaroundWH != null)
             {
@@ -398,8 +398,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
                                                         turnaroundWH.ContainerMasterItemType, (int?)turnaroundWH.LastEventTypeId, (int?)turnaroundWH.NextEventTypeId, turnaroundWH.ContainerMasterDefinitionId, turnaroundWH.NextEventName);
                 if (turnaround.TurnaroundEvent != null)
                 {
-                    turnaroundData.LastProcessEventTypeId = turnaround.TurnaroundEvent.Where(i => i.EventType.ProcessEvent).OrderByDescending(j => j.TurnaroundEventId).Take(1).FirstOrDefault().EventTypeId;
-                }           
+                    turnaroundData.LastProcessEventTypeId = turnaround.TurnaroundEvent.Where(i => i.EventType.ProcessEvent).OrderByDescending(j => j.TurnaroundEventId).Take(1).FirstOrDefault()?.EventTypeId;
+                }
             }
             return turnaroundData;
         }
@@ -407,8 +407,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertTurnaroundsToTurnaroundsData operation
         /// </summary>
-        public static IList<TurnaroundData> ConvertTurnaroundsToTurnaroundsData(IUnitOfWork workUnit,
-                                                                                IList<ITurnaround> turnarounds)
+        public static IList<TurnaroundData>? ConvertTurnaroundsToTurnaroundsData(IUnitOfWork workUnit,
+                                                                                IList<ITurnaround>? turnarounds)
         {
             if (turnarounds == null)
             {
@@ -416,23 +416,23 @@ namespace SynergyApplicationFrameworkApi.Application.Services
             }
             IList<TurnaroundData> turnaroundsDataList =
               turnarounds.Select(ts => ConvertTurnaroundToTurnaroundData(workUnit, ts)).Where(i => i != null).ToList();
-           
+
             return turnaroundsDataList;
         }
 
         /// <summary>
         /// ConvertTurnaroundEventToTurnaroundEventData operation
         /// </summary>
-        public static TurnaroundEventData ConvertTurnaroundEventToTurnaroundEventData(ITurnaroundEvent turnaroundEvent)
+        public static TurnaroundEventData? ConvertTurnaroundEventToTurnaroundEventData(ITurnaroundEvent? turnaroundEvent)
         {
-            return new TurnaroundEventData(turnaroundEvent);
+            return turnaroundEvent == null ? null : new TurnaroundEventData(turnaroundEvent);
         }
 
         /// <summary>
         /// ConvertTurnaroundEventsToTurnaroundEventsData operation
         /// </summary>
-        public static IList<TurnaroundEventData> ConvertTurnaroundEventsToTurnaroundEventsData(
-            IList<ITurnaroundEvent> turnaroundEvents)
+        public static IList<TurnaroundEventData>? ConvertTurnaroundEventsToTurnaroundEventsData(
+            IList<ITurnaroundEvent>? turnaroundEvents)
         {
             if (turnaroundEvents == null)
             {
@@ -446,7 +446,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertUserToUserData operation
         /// </summary>
-        public static UserData ConvertUserToUserData(IUser user)
+        public static UserData? ConvertUserToUserData(IUser? user)
         {
             if (user == null)
             {
@@ -461,7 +461,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertPermissionToPermissionData operation
         /// </summary>
-        public static RolePermissionData ConvertPermissionToPermissionData(RolePermission rolePermission)
+        public static RolePermissionData? ConvertPermissionToPermissionData(RolePermission? rolePermission)
         {
             return rolePermission == null ? null : new RolePermissionData(rolePermission);
         }
@@ -469,7 +469,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertRolePermissionToRolePermissionData operation
         /// </summary>
-        public static IList<RolePermissionData> ConvertRolePermissionToRolePermissionData(IList<RolePermission> rolePermissions)
+        public static IList<RolePermissionData>? ConvertRolePermissionToRolePermissionData(IList<RolePermission>? rolePermissions)
         {
             if (rolePermissions == null)
             {
@@ -482,7 +482,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertRoleToRoleData operation
         /// </summary>
-        public static RoleData ConvertRoleToRoleData(Role role)
+        public static RoleData? ConvertRoleToRoleData(Role? role)
         {
             return role == null ? null : new RoleData(role);
         }
@@ -490,7 +490,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertRolesToRoleData operation
         /// </summary>
-        public static IList<RoleData> ConvertRolesToRoleData(IList<Role> roles)
+        public static IList<RoleData>? ConvertRolesToRoleData(IList<Role>? roles)
         {
             if (roles == null)
             {
@@ -503,7 +503,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertStationToStationData operation
         /// </summary>
-        public static StationData ConvertStationToStationData(IStation station)
+        public static StationData? ConvertStationToStationData(IStation? station)
         {
             return station == null ? null : new StationData(station);
         }
@@ -511,8 +511,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertStationToStationData operation
         /// </summary>
-        public static StationData ConvertStationToStationData(IStation station, IStationType stationType,
-                                                              IList<IStationType> associatedStationTypes)
+        public static StationData? ConvertStationToStationData(IStation? station, IStationType? stationType,
+                                                              IList<IStationType>? associatedStationTypes)
         {
             return station == null ? null : new StationData(station, stationType, associatedStationTypes);
         }
@@ -520,7 +520,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertStationTypeToStationTypeData operation
         /// </summary>
-        public static StationTypeData ConvertStationTypeToStationTypeData(IStationType stationType)
+        public static StationTypeData? ConvertStationTypeToStationTypeData(IStationType? stationType)
         {
             return stationType == null ? null : new StationTypeData(stationType);
         }
@@ -528,7 +528,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertStationTypesToStationTypesData operation
         /// </summary>
-        public static IList<StationTypeData> ConvertStationTypesToStationTypesData(IList<IStationType> stationTypes)
+        public static IList<StationTypeData>? ConvertStationTypesToStationTypesData(IList<IStationType>? stationTypes)
         {
             if (stationTypes == null)
             {
@@ -541,7 +541,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertItemTypeToItemTypeData operation
         /// </summary>
-        public static ItemTypeData ConvertItemTypeToItemTypeData(IItemType itemType)
+        public static ItemTypeData? ConvertItemTypeToItemTypeData(IItemType? itemType)
         {
             return itemType == null ? null : new ItemTypeData(itemType);
         }
@@ -549,7 +549,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertItemTypesToItemTypesData operation
         /// </summary>
-        public static IList<ItemTypeData> ConvertItemTypesToItemTypesData(IList<IItemType> itemTypes)
+        public static IList<ItemTypeData>? ConvertItemTypesToItemTypesData(IList<IItemType>? itemTypes)
         {
             if (itemTypes == null)
             {
@@ -562,7 +562,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertMachineToStationData operation
         /// </summary>
-        public static MachineData ConvertMachineToStationData(IMachine genericMachine)
+        public static MachineData? ConvertMachineToStationData(IMachine? genericMachine)
         {
             if (genericMachine != null)
             {
@@ -575,8 +575,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertDefectClassificationToDefectClassificationData operation
         /// </summary>
-        public static DefectClassificationData ConvertDefectClassificationToDefectClassificationData(
-            IDefectClassification defectClassification)
+        public static DefectClassificationData? ConvertDefectClassificationToDefectClassificationData(
+            IDefectClassification? defectClassification)
         {
             return defectClassification == null ? null : new DefectClassificationData(defectClassification);
         }
@@ -584,8 +584,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertDefectClassificationsToDefectClassificationsData operation
         /// </summary>
-        public static IList<DefectClassificationData> ConvertDefectClassificationsToDefectClassificationsData(
-            IList<IDefectClassification> defectClassifications)
+        public static IList<DefectClassificationData>? ConvertDefectClassificationsToDefectClassificationsData(
+            IList<IDefectClassification>? defectClassifications)
         {
             if (defectClassifications == null)
             {
@@ -599,7 +599,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertFailureTypeToFailureTypeData operation
         /// </summary>
-        public static FailureTypeData ConvertFailureTypeToFailureTypeData(IFailureType failureType)
+        public static FailureTypeData? ConvertFailureTypeToFailureTypeData(IFailureType? failureType)
         {
             return failureType == null ? null : new FailureTypeData(failureType);
         }
@@ -607,7 +607,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertFailureTypesToFailureTypesData operation
         /// </summary>
-        public static IList<FailureTypeData> ConvertFailureTypesToFailureTypesData(IList<IFailureType> failureTypes)
+        public static IList<FailureTypeData>? ConvertFailureTypesToFailureTypesData(IList<IFailureType>? failureTypes)
         {
             if (failureTypes == null)
             {
@@ -620,7 +620,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertTurnaroundWHToPriorityScreenData operation
         /// </summary>
-        public static PriorityScreenData ConvertTurnaroundWHToPriorityScreenData(ITurnaroundWH turnaroundWH)
+        public static PriorityScreenData? ConvertTurnaroundWHToPriorityScreenData(ITurnaroundWH? turnaroundWH)
         {
             if (turnaroundWH == null)
             {
@@ -665,8 +665,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertTurnaroundWHsToPriorityScreenData operation
         /// </summary>
-        public static IList<PriorityScreenData> ConvertTurnaroundWHsToPriorityScreenData(
-            IList<TurnaroundWH> turnaroundWHs)
+        public static IList<PriorityScreenData>? ConvertTurnaroundWHsToPriorityScreenData(
+            IList<TurnaroundWH>? turnaroundWHs)
         {
             return turnaroundWHs == null ? null : turnaroundWHs.Select(ConvertTurnaroundWHToPriorityScreenData).ToList();
         }
@@ -676,7 +676,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertBiologicalIndicatorTestToDataContract operation
         /// </summary>
-        public static BiologicalIndicatorTestData ConvertBiologicalIndicatorTestToDataContract(IBiologicalIndicatorTest genericBiologicalIndicatorTest)
+        public static BiologicalIndicatorTestData? ConvertBiologicalIndicatorTestToDataContract(IBiologicalIndicatorTest? genericBiologicalIndicatorTest)
         {
             if (genericBiologicalIndicatorTest == null)
             {
@@ -690,10 +690,10 @@ namespace SynergyApplicationFrameworkApi.Application.Services
                 if (generic.Batch != null)
                     data.BatchStatusId = generic.Batch.BatchStatusId;
                 if (generic.TestedUserId.GetValueOrDefault() > 0)
-                    data.TestedBy = string.Format("{0}{1}{2}", generic.User1.FirstName, " ", generic.User1.Surname);
+                    data.TestedBy = string.Format("{0} {1}", generic.User1.FirstName, generic.User1.Surname);
                 if (data.ReviewedUserId.GetValueOrDefault() > 0)
                 {
-                    string name = string.Format("{0}{1}{2}", generic.User.FirstName, " ", generic.User.Surname);
+                    string name = string.Format("{0} {1}", generic.User.FirstName, generic.User.Surname);
                     data.ReviewdBy = name;
                 }
             }
@@ -705,16 +705,16 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertTargetTimeToTargetTimeData operation
         /// </summary>
-        public static TargetTimeData ConvertTargetTimeToTargetTimeData(TargetTime targetTime)
+        public static TargetTimeData? ConvertTargetTimeToTargetTimeData(TargetTime? targetTime)
         {
-            TargetTimeData targetTimeData = null;
+            TargetTimeData? targetTimeData = null;
             if (targetTime != null)
             {
                 targetTimeData = new TargetTimeData
-                    {
-                        TargetTimeIncreaseinSeconds = targetTime.TargetTimeIncreaseinSeconds,
-                        TargetTimeinSeconds = targetTime.TargetTimeinSeconds
-                    };
+                {
+                    TargetTimeIncreaseinSeconds = targetTime.TargetTimeIncreaseinSeconds,
+                    TargetTimeinSeconds = targetTime.TargetTimeinSeconds
+                };
             }
             return targetTimeData;
         }
@@ -722,18 +722,18 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertUserPerformanceToUserPerformanceData operation
         /// </summary>
-        public static UserPerformanceData ConvertUserPerformanceToUserPerformanceData(UserPerformance userPerformance)
+        public static UserPerformanceData? ConvertUserPerformanceToUserPerformanceData(UserPerformance? userPerformance)
         {
-            UserPerformanceData userPerformanceData = null;
+            UserPerformanceData? userPerformanceData = null;
             if (userPerformance != null)
             {
                 userPerformanceData = new UserPerformanceData
-                    {
-                        PercentageIPOHVariance = userPerformance.PercentageIPOHVariance
-                    };
+                {
+                    PercentageIPOHVariance = userPerformance.PercentageIPOHVariance
+                };
             }
             return userPerformanceData;
         }
-        
+
     }
 }

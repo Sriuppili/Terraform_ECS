@@ -3,9 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web.Http;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
+using System.Globalization;
+using System.Diagnostics;
+using System.Collections.ObjectModel;
+using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Controllers;
 
 namespace SynergyApplicationFrameworkApi.Application.Services
 {
@@ -538,5 +544,223 @@ namespace SynergyApplicationFrameworkApi.Application.Services
                 apiModel.ErrorMessages.Add(invalidSample.ErrorMessage);
             }
         }
+    }
+
+    public interface IDocumentationProvider
+    {
+        string GetDocumentation(ApiDescription apiDescription);
+        string GetDocumentation(ControllerDescriptor controllerDescriptor);
+        string GetDocumentation(ParameterDescriptor parameterDescriptor);
+    }
+
+    public class HttpConfiguration
+    {
+        public ServicesContainer Services { get; set; } = new ServicesContainer();
+        public IDictionary<object, object> Properties { get; set; } = new Dictionary<object, object>();
+
+        public class ServicesContainer
+        {
+            private readonly Dictionary<Type, object> _services = new Dictionary<Type, object>();
+
+            public void Replace(Type serviceType, object service)
+            {
+                _services[serviceType] = service;
+            }
+
+            public T GetService<T>() where T : class
+            {
+                return _services.TryGetValue(typeof(T), out var service) ? (T)service : null;
+            }
+
+            public IApiExplorer GetApiExplorer()
+            {
+                return _services.TryGetValue(typeof(IApiExplorer), out var service) ? (IApiExplorer)service : new DefaultApiExplorer();
+            }
+        }
+
+        public class DefaultApiExplorer : IApiExplorer
+        {
+            public Collection<ApiDescription> ApiDescriptions { get; set; } = new Collection<ApiDescription>();
+        }
+    }
+
+    public class ApiDescription
+    {
+        public List<ApiParameterDescription> ParameterDescriptions { get; set; } = new List<ApiParameterDescription>();
+        public ResponseDescription ResponseDescription { get; set; } = new ResponseDescription();
+        public ControllerActionDescriptor ActionDescriptor { get; set; } = new ControllerActionDescriptor();
+
+        public string GetFriendlyId()
+        {
+            return ActionDescriptor.ActionName;
+        }
+    }
+
+    public class ApiParameterDescription
+    {
+        public ApiParameterSource Source { get; set; }
+        public string Name { get; set; }
+        public string Documentation { get; set; }
+        public HttpParameterDescriptor ParameterDescriptor { get; set; }
+    }
+
+    public enum ApiParameterSource
+    {
+        Unknown,
+        FromUri,
+        FromBody,
+        FromHeader
+    }
+
+    public class ResponseDescription
+    {
+        public Type ResponseType { get; set; }
+        public Type DeclaredType { get; set; }
+    }
+
+    public class HttpParameterDescriptor
+    {
+        public Type ParameterType { get; set; }
+        public object DefaultValue { get; set; }
+        public bool IsOptional { get; set; }
+    }
+
+    public class ControllerActionDescriptor
+    {
+        public string ActionName { get; set; }
+        public List<T> GetCustomAttributes<T>(bool inherit) where T : Attribute
+        {
+            return new List<T>();
+        }
+    }
+
+    public class HelpPageApiModel
+    {
+        public ApiDescription ApiDescription { get; set; }
+        public ModelDescription RequestModelDescription { get; set; }
+        public ModelDescription ResourceDescription { get; set; }
+        public string RequestDocumentation { get; set; }
+        public List<ParameterDescription> UriParameters { get; set; } = new List<ParameterDescription>();
+        public List<SynergyTrakAuthenticationAttribute> AuthenticationFilters { get; set; } = new List<SynergyTrakAuthenticationAttribute>();
+        public List<string> UriPermissions { get; set; } = new List<string>();
+        public List<HttpResultAttribute> HttpResults { get; set; } = new List<HttpResultAttribute>();
+        public List<HttpHeaderAttribute> HttpHeaders { get; set; } = new List<HttpHeaderAttribute>();
+        public MethodStatusAttribute MethodStatus { get; set; }
+        public Dictionary<MediaTypeHeaderValue, object> SampleRequests { get; set; } = new Dictionary<MediaTypeHeaderValue, object>();
+        public Dictionary<MediaTypeHeaderValue, object> SampleResponses { get; set; } = new Dictionary<MediaTypeHeaderValue, object>();
+        public List<string> ErrorMessages { get; set; } = new List<string>();
+    }
+
+    public class ModelDescriptionGenerator
+    {
+        private readonly HttpConfiguration _config;
+
+        public ModelDescriptionGenerator(HttpConfiguration config)
+        {
+            _config = config;
+        }
+
+        public ModelDescription GetOrCreateModelDescription(Type type)
+        {
+            return new ModelDescription();
+        }
+    }
+
+    public class ModelDescription
+    {
+    }
+
+    public class ComplexTypeModelDescription : ModelDescription
+    {
+        public List<ParameterDescription> Properties { get; set; } = new List<ParameterDescription>();
+    }
+
+    public class ParameterDescription
+    {
+        public string Name { get; set; }
+        public string Documentation { get; set; }
+        public ModelDescription TypeDescription { get; set; }
+        public List<ParameterAnnotation> Annotations { get; set; } = new List<ParameterAnnotation>();
+    }
+
+    public class ParameterAnnotation
+    {
+        public string Documentation { get; set; }
+    }
+
+    public class HelpPageSampleGenerator
+    {
+        public IDictionary<Type, object> SampleObjects { get; set; } = new Dictionary<Type, object>();
+        public IDictionary<HelpPageSampleKey, object> ActionSamples { get; set; } = new Dictionary<HelpPageSampleKey, object>();
+        public IDictionary<HelpPageSampleKey, Type> ActualHttpMessageTypes { get; set; } = new Dictionary<HelpPageSampleKey, Type>();
+
+        public IEnumerable<KeyValuePair<MediaTypeHeaderValue, object>> GetSampleRequests(ApiDescription apiDescription)
+        {
+            return new List<KeyValuePair<MediaTypeHeaderValue, object>>();
+        }
+
+        public IEnumerable<KeyValuePair<MediaTypeHeaderValue, object>> GetSampleResponses(ApiDescription apiDescription)
+        {
+            return new List<KeyValuePair<MediaTypeHeaderValue, object>>();
+        }
+
+        public Type ResolveHttpRequestMessageType(ApiDescription apiDescription)
+        {
+            return null;
+        }
+
+        public static Exception UnwrapException(Exception e)
+        {
+            return e;
+        }
+    }
+
+    public class HelpPageSampleKey
+    {
+        public HelpPageSampleKey(MediaTypeHeaderValue mediaType)
+        {
+        }
+
+        public HelpPageSampleKey(MediaTypeHeaderValue mediaType, Type type)
+        {
+        }
+
+        public HelpPageSampleKey(MediaTypeHeaderValue mediaType, SampleDirection direction, string controllerName, string actionName, string[] parameterNames)
+        {
+        }
+    }
+
+    public enum SampleDirection
+    {
+        Request,
+        Response
+    }
+
+    public class InvalidSample
+    {
+        public string ErrorMessage { get; set; }
+    }
+
+    public class SynergyTrakAuthenticationAttribute : Attribute
+    {
+        public string[] Permissions { get; set; }
+    }
+
+    public class HttpResultAttribute : Attribute
+    {
+        public HttpStatusCode Code { get; set; }
+        public string Message { get; set; }
+    }
+
+    public class HttpHeaderAttribute : Attribute
+    {
+    }
+
+    public class MethodStatusAttribute : Attribute
+    {
+    }
+
+    public class BadRequestOnModelInvalidAttribute : Attribute
+    {
     }
 }

@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using SynergyApplicationFrameworkApi.Application.Models;
 
 namespace SynergyApplicationFrameworkApi.Application.Interfaces
 {
@@ -373,9 +374,10 @@ namespace SynergyApplicationFrameworkApi.Application.Interfaces
         /// <param name="cycleTypeId">The cycle type id.</param>
         /// <returns></returns>
         /// <remarks></remarks>
-        BatchCycleData ReadBatchCycle(int cycleTypeId);/// <summary>
+        BatchCycleData ReadBatchCycle(int cycleTypeId);
         
         
+        /// <summary>
         /// Reads the turnaroundevents for .
         /// </summary>
         /// <param name="cycleTypeId">The cycle type id.</param>

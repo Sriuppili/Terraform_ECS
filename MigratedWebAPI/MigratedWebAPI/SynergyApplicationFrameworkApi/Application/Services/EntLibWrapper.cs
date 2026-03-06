@@ -1,112 +1,43 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+using SynergyApplicationFrameworkApi.Application.Interfaces;
+using Serilog;
 
 namespace SynergyApplicationFrameworkApi.Application.Services
 {
-    /// <summary>
-    /// EntLibWrapper,
-    /// </summary>
-    public class EntLibWrapper, ISynergyExceptionManager
+    public class EntLibWrapper : ISynergyExceptionHandler
     {
-        protected ExceptionManager ExManager { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
-        public EntLibWrapper()
-        {
-            var unityContainer = new UnityContainer()
-                .AddNewExtension<EnterpriseLibraryCoreExtension>();
-            ExManager = unityContainer.Resolve<ExceptionManager>();
-        }
-
-        #region ISynergyExceptionHandler Members
-
-        /// <summary>
-        /// Handles the exception.
-        /// </summary>
-        /// <param name="exception">The exception.</param>
-        /// <summary>
-        /// HandleException operation
-        /// </summary>
         public bool HandleException(Exception exception)
         {
-            return ExManager.HandleException(exception, "DefaultHandling");
+            Log.Error(exception, "Unhandled exception");
+            return false;
         }
 
-        /// <summary>
-        /// Handles the exception.
-        /// </summary>
-        /// <param name="exception">The exception.</param>
-        /// <param name="policyName">Name of the policy.</param>
-        /// <summary>
-        /// HandleException operation
-        /// </summary>
-        public bool HandleException(Exception exception, String policyName)
+        public bool HandleException(Exception exception, string policyName)
         {
-            return ExManager.HandleException(exception, policyName);
+            Log.Error(exception, "Unhandled exception. Policy: {Policy}", policyName);
+            return false;
         }
 
-        /// <summary>
-        /// Handles the exception.
-        /// </summary>
-        /// <param name="exception">The exception.</param>
-        /// <param name="policyName">Name of the policy.</param>
-        /// <param name="exceptionToThrow">The exception to throw.</param>
-        /// <summary>
-        /// HandleException operation
-        /// </summary>
-        public bool HandleException(Exception exception, String policyName, out Exception exceptionToThrow)
+        public bool HandleException(Exception exception, string policyName, out Exception exceptionToThrow)
         {
-            return ExManager.HandleException(exception, policyName, out exceptionToThrow);
+            Log.Error(exception, "Unhandled exception. Policy: {Policy}", policyName);
+            exceptionToThrow = exception;
+            return false;
         }
 
-        #endregion
-
-        #region ISynergyExceptionManager Members
-
-        /// <summary>
-        /// Manages the exception.
-        /// </summary>
-        /// <param name="exception">The exception.</param>
-        /// <summary>
-        /// ManageException operation
-        /// </summary>
         public void ManageException(Exception exception)
         {
-            ExManager.HandleException(exception, "DefaultManagement");
+            Log.Error(exception, "Managed exception");
         }
 
-        /// <summary>
-        /// Manages the exception.
-        /// </summary>
-        /// <param name="exception">The exception.</param>
-        /// <param name="policyName">Name of the policy.</param>
-        /// <summary>
-        /// ManageException operation
-        /// </summary>
-        public void ManageException(Exception exception, String policyName)
+        public void ManageException(Exception exception, string policyName)
         {
-            ExManager.HandleException(exception, policyName);
+            Log.Error(exception, "Managed exception. Policy: {Policy}", policyName);
         }
 
-        /// <summary>
-        /// Manages the exception.
-        /// </summary>
-        /// <param name="exception">The exception.</param>
-        /// <param name="policyName">Name of the policy.</param>
-        /// <param name="exceptionToThrow">The exception to throw.</param>
-        /// <summary>
-        /// ManageException operation
-        /// </summary>
-        public void ManageException(Exception exception, String policyName, out Exception exceptionToThrow)
+        public void ManageException(Exception exception, string policyName, out Exception exceptionToThrow)
         {
-            ExManager.HandleException(exception, policyName, out exceptionToThrow);
+            Log.Error(exception, "Managed exception. Policy: {Policy}", policyName);
+            exceptionToThrow = exception;
         }
-
-        #endregion
     }
 }

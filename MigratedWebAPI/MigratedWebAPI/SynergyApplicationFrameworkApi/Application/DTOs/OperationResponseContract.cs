@@ -6,6 +6,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SynergyApplicationFrameworkApi.Application.DTOs
 {
+
+    public enum MessageSeverity
+    {
+        Null = 0,
+        Info = 1,
+        Warning = 2,
+        Error = 3,
+        Critical = 4
+    }
+
+
     [Serializable]
     /// <summary>
     /// OperationResponseContract

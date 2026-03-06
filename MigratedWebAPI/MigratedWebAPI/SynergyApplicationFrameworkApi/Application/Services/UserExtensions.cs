@@ -4,6 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Principal;
+using System.Linq.Expressions;
+using SynergyApplicationFrameworkApi.Framework.Encryption;
+using SynergyApplicationFrameworkApi.Framework;
+using SynergyApplicationFrameworkApi.Entities;
+
 namespace SynergyApplicationFrameworkApi.Application.Services
 {
     public static class UserExtentions
@@ -11,11 +17,11 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// FullName operation
         /// </summary>
-        public static string FullName(this User user)
+        public static string FullName(this User? user)
         {
             return user == null
                 ? string.Empty
-                : "{0} {1}".FormatWith(user.FirstName, user.Surname).Trim();
+                : string.Format("{0} {1}", user.FirstName, user.Surname).Trim();
         }
 
         /// <summary>
@@ -141,7 +147,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
 
             var result = ValidateChangePasswordParameters(user, currentPassword, newPassword, confirmNewPassword, previousPasswordsToCheck, maxPasswordAttempts, isEnforced, maxBreachLimit, breachPolicy, repository, out recordLoginAudit);
 
-            if (result != 0)
+            if (result != ChangePasswordResult.Success)
             {
                 return result;
             }
@@ -154,6 +160,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
             user.LastLogin = now;
             user.IsExpired = false;
             repository.Save(user);
+            repository.CommitChanges();
 
             result = ChangePasswordResult.Success;
             recordLoginAudit = true;
@@ -163,25 +170,25 @@ namespace SynergyApplicationFrameworkApi.Application.Services
 
         private static ChangePasswordResult ValidateChangePasswordParameters(User user, string currentPassword, string newPassword, string confirmNewPassword, int passwordsToCheck, int maxPasswordAttempts, bool isEnforced, int maxBreachLimit, int breachPolicy, IPathwayRepository repository, out bool recordLoginAudit)
         {
-            var result = ChangePasswordResult.Unknown;
+            var result = ChangePasswordResult.Success;
             recordLoginAudit = false;
 
             if (string.IsNullOrEmpty(currentPassword))
             {
-                result = result | ChangePasswordResult.FailedOnCurrentPasswordRequired;
+                result |= ChangePasswordResult.FailedOnCurrentPasswordRequired;
             }
 
             if (string.IsNullOrEmpty(newPassword))
             {
-                result = result | ChangePasswordResult.FailedOnNewPasswordRequired;
+                result |= ChangePasswordResult.FailedOnNewPasswordRequired;
             }
 
             if (string.IsNullOrEmpty(confirmNewPassword))
             {
-                result = result | ChangePasswordResult.FailedOnConfirmNewPasswordRequired;
+                result |= ChangePasswordResult.FailedOnConfirmNewPasswordRequired;
             }
 
-            if (result > 0)
+            if (result != ChangePasswordResult.Success)
             {
                 return result;
             }
@@ -189,27 +196,27 @@ namespace SynergyApplicationFrameworkApi.Application.Services
             if (!user.ValidatePassword(currentPassword, repository))
             {
                 user.UpdatePasswordAttempts(maxPasswordAttempts, repository);
-                result = result | ChangePasswordResult.FailedOnCurrentPasswordInvalid;
+                result |= ChangePasswordResult.FailedOnCurrentPasswordInvalid;
             }
 
             if (newPassword != confirmNewPassword)
             {
-                result = result | ChangePasswordResult.FailedOnNewPasswordMatch;
+                result |= ChangePasswordResult.FailedOnNewPasswordMatch;
             }
 
-            if (result > 0)
+            if (result != ChangePasswordResult.Success)
             {
                 return result;
             }
 
             if (user.IsPreviousPassword(newPassword, passwordsToCheck, isEnforced, repository))
             {
-                result = result | ChangePasswordResult.FailedOnNewPasswordReuse;
+                result |= ChangePasswordResult.FailedOnNewPasswordReuse;
             }
 
             if (!PasswordManager.MeetsMinumumComplexity(newPassword))
             {
-                result = result | ChangePasswordResult.FailedOnNewPasswordComplexity;
+                result |= ChangePasswordResult.FailedOnNewPasswordComplexity;
             }
 
             if (user.IsBreachedPassword(newPassword, maxBreachLimit, breachPolicy > 0))
@@ -217,7 +224,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
                 recordLoginAudit = true;
                 if (breachPolicy == 1)
                 {
-                    result = result | ChangePasswordResult.FailedOnNewPasswordBreached;
+                    result |= ChangePasswordResult.FailedOnNewPasswordBreached;
                 }
             }
 
@@ -257,7 +264,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
             if (!isEnforced)
                 return false;
 
-            var breachoccurrances = System.Threading.Tasks.Task.Run(() => PasswordManager.GetBreachCountAsync(input)).Result;
+            var breachoccurrances = Task.Run(() => PasswordManager.GetBreachCountAsync(input)).Result;
 
             return breachoccurrances > maxBreachLimit;
         }
@@ -339,15 +346,15 @@ namespace SynergyApplicationFrameworkApi.Application.Services
             repository.CommitChanges();
         }
 
-            /// <summary>
-            /// ResetPasswordAttempts operation
-            /// </summary>
-            public static void ResetPasswordAttempts(this User user, IPathwayRepository repository)
+        /// <summary>
+        /// ResetPasswordAttempts operation
+        /// </summary>
+        public static void ResetPasswordAttempts(this User user, IPathwayRepository repository)
         {
             user.PasswordAttempts = 0;
             user.IsSoftLockedOut = false;
             user.SoftLockOutDate = null;
-            
+
             repository.Save(user);
             repository.CommitChanges();
         }
@@ -522,7 +529,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// IsSystemAdministrator operation
         /// </summary>
-        public static bool IsSystemAdministrator(this User user)
+        public static bool IsSystemAdministrator(this User? user)
         {
             return user?.HasPermission(KnownPermission.Administrator) ?? false;
         }
@@ -842,4 +849,4 @@ namespace SynergyApplicationFrameworkApi.Application.Services
 
         #endregion
     }
-} 
+}

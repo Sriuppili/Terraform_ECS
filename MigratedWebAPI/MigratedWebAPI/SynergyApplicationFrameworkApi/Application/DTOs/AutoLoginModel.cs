@@ -15,7 +15,7 @@ namespace SynergyApplicationFrameworkApi.Application.DTOs
         /// Gets or sets UserID
         /// </summary>
         public int UserID { get; set; }
-        [AllowHtml]
+        
         /// <summary>
         /// Gets or sets Token
         /// </summary>

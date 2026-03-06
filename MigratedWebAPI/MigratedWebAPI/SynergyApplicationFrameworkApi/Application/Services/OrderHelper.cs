@@ -1,4 +1,4 @@
-using SynergyApplicationFrameworkApi.Application.Data.Interfaces.Operative;
+using SynergyApplicationFrameworkApi.Application.DTOs.Interfaces.Operative;
 using System;
 using System.Collections.Generic;
 using System.Data;

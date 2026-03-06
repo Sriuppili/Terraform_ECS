@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+using System.ComponentModel;
 
 namespace SynergyApplicationFrameworkApi.Application.DTOs
 {
@@ -12,618 +14,618 @@ namespace SynergyApplicationFrameworkApi.Application.DTOs
     /// <remarks></remarks>
     public enum TurnAroundEventTypeIdentifier
     {
-        [EnumMember]
+        [EnumMember(Value = "Unknown")]
         Unknown = 0,
 
         [Description("Inbound")]
-        [EnumMember]
+        [EnumMember(Value = "Inbound")]
         Inbound = 1,
 
         [Description("Wash")]
-        [EnumMember]
+        [EnumMember(Value = "Wash")]
         Wash = 2,
 
         [Description("Tray Prioritisation")]
-        [EnumMember]
+        [EnumMember(Value = "TrayPrioritisation")]
         TrayPrioritisation = 3,
 
         [Description("Quality Assurance")]
-        [EnumMember]
+        [EnumMember(Value = "QualityAssurance")]
         QualityAssurance = 5,
 
         [Description("Into Autoclave")]
-        [EnumMember]
+        [EnumMember(Value = "IntoAutoclave")]
         IntoAutoclave = 6,
 
         [Description("Out of Autoclave")]
-        [EnumMember]
+        [EnumMember(Value = "OutofAutoclave")]
         OutofAutoclave = 7,
 
         [Description("Dispatch")]
-        [EnumMember]
+        [EnumMember(Value = "Dispatch")]
         Dispatch = 8,
 
         [Description("Delivery Note Print")]
-        [EnumMember]
+        [EnumMember(Value = "DeliveryNotePrint")]
         DeliveryNotePrint = 9,
 
         [Description("Reprint Tray List")]
-        [EnumMember]
+        [EnumMember(Value = "ReprintTrayList")]
         ReprintTrayList = 10,
 
         [Description("Failed Autoclave")]
-        [EnumMember]
+        [EnumMember(Value = "FailedAutoclave")]
         FailedAutoclave = 11,
 
         [Description("Removed From Delivery Note")]
-        [EnumMember]
+        [EnumMember(Value = "RemovedFromDeliveryNote")]
         RemovedFromDeliveryNote = 13,
 
         [Description("Into Stock")]
-        [EnumMember]
+        [EnumMember(Value = "IntoStock")]
         IntoStock = 14,
 
         [Description("Out Of Stock")]
-        [EnumMember]
+        [EnumMember(Value = "OutOfStock")]
         OutOfStock = 15,
 
         [Description("Inbound With Incorrect Specification")]
-        [EnumMember]
+        [EnumMember(Value = "InboundWithIncorrectSpecification")]
         InboundWithIncorrectSpecification = 16,
 
         [Description("Into Quarantine")]
-        [EnumMember]
+        [EnumMember(Value = "IntoQuarantine")]
         IntoQuarantine = 17,
 
         [Description("Pass Warning")]
-        [EnumMember]
+        [EnumMember(Value = "PassWarning")]
         PassWarning = 18,
 
         [Description("Out Of Quarantine")]
-        [EnumMember]
+        [EnumMember(Value = "OutOfQuarantine")]
         OutOfQuarantine = 19,
 
         [Description("Archived")]
-        [EnumMember]
+        [EnumMember(Value = "Archived")]
         Archived = 20,
 
         [Description("Added to summary")]
-        [EnumMember]
+        [EnumMember(Value = "Addedtosummary")]
         Addedtosummary = 21,
 
         [Description("Failed Wash")]
-        [EnumMember]
+        [EnumMember(Value = "FailedWash")]
         FailedWash = 22,
 
         [Description("Failed Quality Assurance")]
-        [EnumMember]
+        [EnumMember(Value = "FailedQualityAssurance")]
         FailedQualityAssurance = 23,
 
         [Description("Override Cooldown")]
-        [EnumMember]
+        [EnumMember(Value = "OverrideCooldown")]
         OverrideCooldown = 24,
 
         [Description("Facility Open")]
-        [EnumMember]
+        [EnumMember(Value = "FacilityOpen")]
         FacilityOpen = 25,
 
         [Description("Facility Close")]
-        [EnumMember]
+        [EnumMember(Value = "FacilityClose")]
         FacilityClose = 26,
 
         [Description("Delivered")]
-        [EnumMember]
+        [EnumMember(Value = "Delivered")]
         Delivered = 27,
 
         [Description("Available For Collection")]
-        [EnumMember]
+        [EnumMember(Value = "AvailableForCollection")]
         AvailableForCollection = 28,
 
         [Description("Collected")]
-        [EnumMember]
+        [EnumMember(Value = "Collected")]
         Collected = 29,
 
         [Description("Manual Proof of Delivery")]
-        [EnumMember]
+        [EnumMember(Value = "ManualProofofDelivery")]
         ManualProofofDelivery = 30,
 
         [Description("Inspection")]
-        [EnumMember]
+        [EnumMember(Value = "Inspection")]
         Inspection = 31,
 
         [Description("Into Pigeon Hole/Stock")]
-        [EnumMember]
+        [EnumMember(Value = "IntoPigeonHoleStock")]
         IntoPigeonHoleStock = 32,
 
         [Description("Rewash")]
-        [EnumMember]
+        [EnumMember(Value = "Rewash")]
         Rewash = 33,
 
         [Description("Repair")]
-        [EnumMember]
+        [EnumMember(Value = "Repair")]
         Repair = 34,
 
         [Description("To Be Condemned")]
-        [EnumMember]
+        [EnumMember(Value = "ToBeCondemned")]
         ToBeCondemned = 35,
 
         [Description("Send For Reinspection")]
-        [EnumMember]
+        [EnumMember(Value = "SendForReinspection")]
         SendForReinspection = 36,
 
         [Description("Assisted Inspection")]
-        [EnumMember]
+        [EnumMember(Value = "AssistedInspection")]
         AssistedInspection = 37,
 
         [Description("Respot")]
-        [EnumMember]
+        [EnumMember(Value = "Respot")]
         Respot = 38,
 
         [Description("On Order")]
-        [EnumMember]
+        [EnumMember(Value = "OnOrder")]
         OnOrder = 39,
 
         [Description("Non Steam Sterilisation")]
-        [EnumMember]
+        [EnumMember(Value = "NonSteamSterilisation")]
         NonSteamSterilisation = 40,
 
         [Description("Load Trolley")]
-        [EnumMember]
+        [EnumMember(Value = "LoadTrolleyEPOC")]
         LoadTrolleyEPOC = 41,
 
         [Description("Return From Quarantine")]
-        [EnumMember]
+        [EnumMember(Value = "ReturnFromQuarantine")]
         ReturnFromQuarantine = 42,
 
         [Description("Automatic Delivery")]
-        [EnumMember]
+        [EnumMember(Value = "AutomaticDelivery")]
         AutomaticDelivery = 43,
 
         [Description("Transfer")]
-        [EnumMember]
+        [EnumMember(Value = "Transfer")]
         Transfer = 44,
 
         [Description("Service Requirement Change")]
-        [EnumMember]
+        [EnumMember(Value = "ServiceRequirementChange")]
         ServiceRequirementChange = 45,
 
         [Description("Reprint Label")]
-        [EnumMember]
+        [EnumMember(Value = "ReprintLabel")]
         ReprintLabel = 46,
 
         [Description("End Packing")]
-        [EnumMember]
+        [EnumMember(Value = "EndPacking")]
         EndPacking = 47,
 
         [Description("Cancel Packing")]
-        [EnumMember]
+        [EnumMember(Value = "PackingCancelled")]
         PackingCancelled = 48,
 
         [Description("Quarantine Override")]
-        [EnumMember]
+        [EnumMember(Value = "QuarantineOverride")]
         QuarantineOverride = 49,
 
         [Description("Into Wash")]
-        [EnumMember]
+        [EnumMember(Value = "IntoWash")]
         IntoWash = 50,
 
         [Description("Wet Pack")]
-        [EnumMember]
+        [EnumMember(Value = "WetPack")]
         WetPack = 51,
 
         [Description("Broken Pack")]
-        [EnumMember]
+        [EnumMember(Value = "BrokenPack")]
         BrokenPack = 52,
 
         [Description("Item Exception Updated")]
-        [EnumMember]
+        [EnumMember(Value = "ItemExceptionUpdated")]
         ItemExceptionUpdated = 53,
 
         [Description("Receive Stock")]
-        [EnumMember]
+        [EnumMember(Value = "ReceiveStock")]
         ReceiveStock = 54,
 
         [Description("Issued to End User")]
-        [EnumMember]
+        [EnumMember(Value = "IssuedtoEndUser")]
         IssuedtoEndUser = 55,
 
         [Description("Returned from End User")]
-        [EnumMember]
+        [EnumMember(Value = "ReturnedfromEndUser")]
         ReturnedfromEndUser = 56,
 
         [Description("Un Pack")]
-        [EnumMember]
+        [EnumMember(Value = "UNPack")]
         UNPack = 57,
 
         [Description("Print Decontamination Certificate")]
-        [EnumMember]
+        [EnumMember(Value = "PrintDecontaminationCertificate")]
         PrintDecontaminationCertificate = 58,
 
         [Description("Customer Defect Raised")]
-        [EnumMember]
+        [EnumMember(Value = "CustomerDefectRaised")]
         CustomerDefectRaised = 59,
 
         [Description("Customer Defect Responded")]
-        [EnumMember]
+        [EnumMember(Value = "CustomerDefectResponded")]
         CustomerDefectResponded = 60,
 
         [Description("Customer Defect Closed")]
-        [EnumMember]
+        [EnumMember(Value = "CustomerDefectClosed")]
         CustomerDefectClosed = 61,
 
         [Description("Customer Defect Reopen")]
-        [EnumMember]
+        [EnumMember(Value = "CustomerDefectReopen")]
         CustomerDefectReopen = 62,
 
         [Description("Confirmed As Sterile")]
-        [EnumMember]
+        [EnumMember(Value = "ConfirmedAsSterile")]
         ConfirmedAsSterile = 63,
 
         [Description("Acknowledged Note")]
-        [EnumMember]
+        [EnumMember(Value = "AcknowledgeNote")]
         AcknowledgeNote = 64,
 
         [Description("Independent Second Check Required")]
-        [EnumMember]
+        [EnumMember(Value = "IndependentSecondCheckRequired")]
         IndependentSecondCheckRequired = 66,
 
         [Description("Removed From Batch")]
-        [EnumMember]
+        [EnumMember(Value = "RemovedFromBatch")]
         RemovedFromBatch = 67,
 
         [Description("Fail Batch Pre-Steam Injection")]
-        [EnumMember]
+        [EnumMember(Value = "FailBatchPreSteamInjectionWithReassign")]
         FailBatchPreSteamInjectionWithReassign = 68,
 
         [Description("Fail Batch Post-Steam Injection")]
-        [EnumMember]
+        [EnumMember(Value = "FailBatchPostSteamInjection")]
         FailBatchPostSteamInjection = 69,
 
         [Description("Fail Presteam Batch -  Without Reassign")]
-        [EnumMember]
+        [EnumMember(Value = "FailBatchPreSteamInjectionWithoutReassign")]
         FailBatchPreSteamInjectionWithoutReassign = 70,
 
         [Description("Batch Reassigned")]
-        [EnumMember]
+        [EnumMember(Value = "ReassignBatch")]
         ReassignBatch = 71,
 
         [Description("Wash Process Created")]
-        [EnumMember]
+        [EnumMember(Value = "WashProcessCreated")]
         WashProcessCreated = 72,
 
         [Description("Assign to Wash Process Tag")]
-        [EnumMember]
+        [EnumMember(Value = "AssigntoWashProcessTag")]
         AssigntoWashProcessTag = 73,
 
         [Description("Wash - Release Required")]
-        [EnumMember]
+        [EnumMember(Value = "WashRequireRelease")]
         WashRequireRelease = 74,
 
         [Description("Wash Released")]
-        [EnumMember]
+        [EnumMember(Value = "WashRelease")]
         WashRelease = 75,
 
         [Description("Legacy Instance Barcode Replaced")]
-        [EnumMember]
+        [EnumMember(Value = "LegacyInstanceBarcodeReplaced")]
         LegacyInstanceBarcodeReplaced = 76,
 
         [Description("Failed Wash(Release Required)")]
-        [EnumMember]
+        [EnumMember(Value = "FailedWashReleaseRequired")]
         FailedWashReleaseRequired = 77,
 
         [Description("Failed Packing")]
-        [EnumMember]
+        [EnumMember(Value = "FailedPacking")]
         FailedPacking = 78,
 
         [Description("Reprint Instance Barcode")]
-        [EnumMember]
+        [EnumMember(Value = "ReprintInstanceBarcode")]
         ReprintInstanceBarcode = 79,
 
         [Description("Part Wash")]
-        [EnumMember]
+        [EnumMember(Value = "PartWash")]
         PartWash = 80,
 
         [Description("Reprinted Delivery Note")]
-        [EnumMember]
+        [EnumMember(Value = "ReprintedDeliveryNote")]
         ReprintedDeliveryNote = 81,
 
         [Description("Assigned to Batch Tag")]
-        [EnumMember]
+        [EnumMember(Value = "AssignToBatchTag")]
         AssignToBatchTag = 82,
 
         [Description("Removed From Batch Tag")]
-        [EnumMember]
+        [EnumMember(Value = "RemoveFromBatchTag")]
         RemoveFromBatchTag = 83,
 
         [Description("Removed from Invoice")]
-        [EnumMember]
+        [EnumMember(Value = "RemovedFromInvoice")]
         RemovedFromInvoice = 84,
 
         [Description("Load Trolley EPOD")]
-        [EnumMember]
+        [EnumMember(Value = "LoadTrolleyEPOD")]
         LoadTrolleyEPOD = 85,
 
         [Description("Batch Tag Created")]
-        [EnumMember]
+        [EnumMember(Value = "BatchTagCreated")]
         BatchTagCreated = 86,
 
         [Description("Removed From Wash Process Tag")]
-        [EnumMember]
+        [EnumMember(Value = "RemoveFromWashProcessTag")]
         RemoveFromWashProcessTag = 87,
 
         [Description("Automatic Collection")]
-        [EnumMember]
+        [EnumMember(Value = "AutomaticCollection")]
         AutomaticCollection = 88,
 
         [Description("Automatic Inbound")]
-        [EnumMember]
+        [EnumMember(Value = "AutomaticInbound")]
         AutomaticInbound = 89,
 
         [Description("Into Autoclave (Added in error)")]
-        [EnumMember]
+        [EnumMember(Value = "IntoAutoclaveAddedInError")]
         IntoAutoclaveAddedInError = 90,
 
         [Description("Tray Prioritisation End")]
-        [EnumMember]
+        [EnumMember(Value = "TrayPrioritisationEnd")]
         TrayPrioritisationEnd = 100,
 
         [Description("Wash Start")]
-        [EnumMember]
+        [EnumMember(Value = "WashStart")]
         WashStart = 101,
 
         [Description("QA Start")]
-        [EnumMember]
+        [EnumMember(Value = "QAStart")]
         QAStart = 102,
 
         [Description("Carriage Created")]
-        [EnumMember]
+        [EnumMember(Value = "CarriageCreated")]
         CarriageCreated = 103,
 
         [Description("Assigned to Carriage")]
-        [EnumMember]
+        [EnumMember(Value = "AssignedToCarriage")]
         AssignedToCarriage = 104,
 
         [Description("Removed from Carriage")]
-        [EnumMember]
+        [EnumMember(Value = "RemovedFromCarriage")]
         RemovedFromCarriage = 105,
 
         [Description("Wash In")]
-        [EnumMember]
+        [EnumMember(Value = "WashIn")]
         WashIn = 106,
 
         [Description("Packing Started")]
-        [EnumMember]
+        [EnumMember(Value = "StartPacking")]
         StartPacking = 107,
 
         [Description("Packing Finished")]
-        [EnumMember]
+        [EnumMember(Value = "FinishPacking")]
         FinishPacking = 108,
 
         [Description("Packing Cancelled")]
-        [EnumMember]
+        [EnumMember(Value = "CancelPacking")]
         CancelPacking = 109,
 
         [Description("Packing Failed")]
-        [EnumMember]
+        [EnumMember(Value = "FailPacking")]
         FailPacking = 110,
 
         [Description("Changed Batch")]
-        [EnumMember]
+        [EnumMember(Value = "ChangedBatch")]
         ChangedBatch = 111,
 
         [Description("Biological Indicator Failed")]
-        [EnumMember]
+        [EnumMember(Value = "BiologicalIndicatorFailed")]
         BiologicalIndicatorFailed = 112,
 
         [Description("Planned Maintenance Check")]
-        [EnumMember]
+        [EnumMember(Value = "PlannedMaintenanceChecked")]
         PlannedMaintenanceChecked = 113,
 
         [Description("Planned Maintenance Warning")]
-        [EnumMember]
+        [EnumMember(Value = "PlannedMaintenanceWarned")]
         PlannedMaintenanceWarned = 114,
 
         [Description("Order Shipped")]
-        [EnumMember]
+        [EnumMember(Value = "OrderShipped")]
         OrderShipped = 115,
 
         [Description("Removed From Order")]
-        [EnumMember]
+        [EnumMember(Value = "RemovedFromOrder")]
         RemovedFromOrder = 116,
 
         [Description("Added To Order")]
-        [EnumMember]
+        [EnumMember(Value = "AddedToOrder")]
         AddedToOrder = 117,
 
         [Description("Packing Process Ended")]
-        [EnumMember]
+        [EnumMember(Value = "PackingProcessEnded")]
         PackingProcessEnded = 118,
 
         [Description("Review Needed")]
-        [EnumMember]
+        [EnumMember(Value = "ReviewNeeded")]
         ReviewNeeded = 119,
 
         [Description("Reviewed")]
-        [EnumMember]
+        [EnumMember(Value = "Reviewed")]
         Reviewed = 120,
 
         [Description("Review Cancelled")]
-        [EnumMember]
+        [EnumMember(Value = "ReviewCancelled")]
         ReviewCancelled = 121,
 
         [Description("Retrospective out of Autoclave Approval")]
-        [EnumMember]
+        [EnumMember(Value = "RetrospectiveOutOfAutoclaveApproval")]
         RetrospectiveOutOfAutoclaveApproval = 122,
 
         [Description("Turnaround Ended Early")]
-        [EnumMember]
+        [EnumMember(Value = "TurnaroundEndedEarly")]
         TurnaroundEndedEarly = 123,
 
         [Description("Facility Changed")]
-        [EnumMember]
+        [EnumMember(Value = "ChangedFacility")]
         ChangedFacility = 124,
 
         [Description("Decontamination Start")]
-        [EnumMember]
+        [EnumMember(Value = "DeconStart")]
         DeconStart = 130,
 
         [Description("Decontamination End")]
-        [EnumMember]
+        [EnumMember(Value = "DeconEnd")]
         DeconEnd = 131,
 
         [Description("Decontamination Cancel")]
-        [EnumMember]
+        [EnumMember(Value = "DeconCancel")]
         DeconCancel = 132,
 
         [Description("Out of Pigeon Hole/Stock")]
-        [EnumMember]
+        [EnumMember(Value = "OutOfPigeonHoleStock")]
         OutOfPigeonHoleStock = 140,
 
         [Description("Automatic Dispatch")]
-        [EnumMember]
+        [EnumMember(Value = "AutomaticDispatch")]
         AutomaticDispatch = 141,
 
         #region New Quarantine Event Types
         [Description("Reroute to Wash")]
-        [EnumMember]
+        [EnumMember(Value = "RerouteToWash")]
         RerouteToWash = 150,
 
         [Description("Reroute to Inspection, Assembly and Packing")]
-        [EnumMember]
+        [EnumMember(Value = "RerouteToInspectionAssemblyPacking")]
         RerouteToInspectionAssemblyPacking = 152,
 
         [Description("Reroute to Quality Assurance")]
-        [EnumMember]
+        [EnumMember(Value = "RerouteToQualityAssurance")]
         RerouteToQualityAssurance = 153,
 
         [Description("Reroute to Into Autoclave")]
-        [EnumMember]
+        [EnumMember(Value = "RerouteToIntoAutoclave")]
         RerouteToIntoAutoclave = 154,
 
         [Description("Reroute to Dispatch")]
-        [EnumMember]
+        [EnumMember(Value = "RerouteToDispatch")]
         RerouteToDispatch = 155,
 
         [Description("Packing Resumed")]
-        [EnumMember]
+        [EnumMember(Value = "PackingResumed")]
         PackingResumed = 156,
 
         [Description("Packing Paused")]
-        [EnumMember]
+        [EnumMember(Value = "PackingPaused")]
         PackingPaused = 157,
         #endregion
 
         [Description("Added to Transfer Note")]
-        [EnumMember]
+        [EnumMember(Value = "AddedToTransferNote")]
         AddedToTransferNote = 200,
 
         [Description("Removed from Transfer Note")]
-        [EnumMember]
+        [EnumMember(Value = "RemovedFromTransferNote")]
         RemovedFromTransferNote = 201,
 
         [Description("Facility Transfer - Outbound")]
-        [EnumMember]
+        [EnumMember(Value = "FacilityTransferOutbound")]
         FacilityTransferOutbound = 202,
 
         [Description("Facility Transfer - Inbound")]
-        [EnumMember]
+        [EnumMember(Value = "FacilityTransferInbound")]
         FacilityTransferInbound = 203,
 
         [Description("Retrospective added to batch tag")]
-        [EnumMember]
+        [EnumMember(Value = "RetrospectiveAddedToBatchTag")]
         RetrospectiveAddedToBatchTag = 210,
 
         [Description("Retrospective added to wash batch")]
-        [EnumMember]
+        [EnumMember(Value = "RetrospectiveAddedToWashBatch")]
         RetrospectiveAddedToWashBatch = 211,
 
         [Description("Added to Surgical Procedure")]
-        [EnumMember]
+        [EnumMember(Value = "AddToSurgicalProcedure")]
         AddToSurgicalProcedure = 212,
 
         [Description("Removed from Surgical Procedure")]
-        [EnumMember]
+        [EnumMember(Value = "RemovedFromSurgicalProcedure")]
         RemovedFromSurgicalProcedure = 213,
 
         [Description("Automatic Start")]
-        [EnumMember]
+        [EnumMember(Value = "AutomaticStart")]
         AutomaticStart = 214,
 
         [Description("Weighed (Using Pre-Wash Tolerances)")]
-        [EnumMember]
+        [EnumMember(Value = "WeighedUsingPreWashTolerances")]
         WeighedUsingPreWashTolerances = 215,
 
         [Description("Weighed (Using Post-Wash Tolerances)")]
-        [EnumMember]
+        [EnumMember(Value = "WeighedUsingPostWashTolerances")]
         WeighedUsingPostWashTolerances = 216,
 
         [Description("Specification Updated")]
-        [EnumMember]
+        [EnumMember(Value = "SpecificationChanged")]
         SpecificationChanged = 217,
 
         [Description("Biological Indicator Incubation Failure")]
-        [EnumMember]
+        [EnumMember(Value = "BiologicalIndicatorIncubationFailure")]
         BiologicalIndicatorIncubationFailure = 220,
 
         [Description("Audit Started")]
-        [EnumMember]
+        [EnumMember(Value = "AuditStarted")]
         AuditStarted = 230,
 
         [Description("Audit Finished")]
-        [EnumMember]
+        [EnumMember(Value = "AuditFinished")]
         AuditFinished = 231,
 
         [Description("Audit Failed")]
-        [EnumMember]
+        [EnumMember(Value = "AuditFailed")]
         AuditFailed = 232,
 
         [Description("Audit Cancelled")]
-        [EnumMember]
+        [EnumMember(Value = "AuditCancelled")]
         AuditCancelled = 233,
 
         [Description("Reprint")]
-        [EnumMember]
+        [EnumMember(Value = "Reprint")]
         Reprint = 263,
 
         [Description("Fail Wash In")]
-        [EnumMember]
+        [EnumMember(Value = "FailWashIn")]
         FailWashIn = 264,
 
         [Description("Restart Wash")]
-        [EnumMember]
+        [EnumMember(Value = "RestartWash")]
         RestartWash = 265,
 
-        [EnumMember]
+        [EnumMember(Value = "FailedWashPrintReport")]
         FailedWashPrintReport = 266,
 
         #region Mobile Offline Events
 
         [Description("Offline - Collected")]
-        [EnumMember]
+        [EnumMember(Value = "OfflineCollected")]
         OfflineCollected = 261,
 
         [Description("Offline - Delivered")]
-        [EnumMember]
+        [EnumMember(Value = "OfflineDelivered")]
         OfflineDelivered = 262,
 
         [Description("Offline - Into Pigeon Hole/Stock")]
-        [EnumMember]
+        [EnumMember(Value = "OfflineIntoPigeonHoleStock")]
         OfflineIntoPigeonHoleStock = 267,
 
         [Description("Offline - Out of Pigeon Hole/Stock")]
-        [EnumMember]
+        [EnumMember(Value = "OfflineOutOfPigeonHoleStock")]
         OfflineOutOfPigeonHoleStock = 268,
 
         [Description("Offline - Available For Collection")]
-        [EnumMember]
+        [EnumMember(Value = "OfflineAvailableForCollection")]
         OfflineAvailableForCollection = 269,
 
         [Description("Offline - Load Trolley")]
-        [EnumMember]
+        [EnumMember(Value = "OfflineLoadTrolley")]
         OfflineLoadTrolley = 270,
 
         [Description("Offline - Load Trolley EPOD")]
-        [EnumMember]
+        [EnumMember(Value = "OfflineLoadTrolleyEPOD")]
         OfflineLoadTrolleyEPOD = 271,
 
         #endregion
@@ -631,78 +633,78 @@ namespace SynergyApplicationFrameworkApi.Application.DTOs
         #region Endoscopy
 
         [Description("Into Drying Cabinet")]
-        [EnumMember]
+        [EnumMember(Value = "IntoDryingCabinet")]
         IntoDryingCabinet = 250,
 
         [Description("Dispatch - Immediate Use")]
-        [EnumMember]
+        [EnumMember(Value = "DispatchImmediateUse")]
         DispatchImmediateUse = 253,
 
         [Description("Removed from Drying Cabinet - Wet")]
-        [EnumMember]
+        [EnumMember(Value = "RemovedFromDryingCabinetWet")]
         RemovedFromDryingCabinetWet = 255,
 
         [Description("Removed from Drying Cabinet - Dry")]
-        [EnumMember]
+        [EnumMember(Value = "RemovedFromDryingCabinetDry")]
         RemovedFromDryingCabinetDry = 256,
 
         [Description("Removed from Drying Cabinet - Expired")]
-        [EnumMember]
+        [EnumMember(Value = "RemovedFromDryingCabinetExpired")]
         RemovedFromDryingCabinetExpired = 257,
 
         [Description("Vacuum Packed")]
-        [EnumMember]
+        [EnumMember(Value = "VacuumPacked")]
         VacuumPacked = 260,
         [Description("Billing Point")]
-        [EnumMember]
+        [EnumMember(Value = "BillingPoint")]
         BillingPoint = 500,
 
         [Description("Print Label")]
-        [EnumMember]
+        [EnumMember(Value = "PrintLabel")]
         PrintLabel = 560,
 
         [Description("Pre-AER decon task success")]
-        [EnumMember]
+        [EnumMember(Value = "PreAerDeconTaskSuccess")]
         PreAerDeconTaskSuccess = 561,
 
         [Description("Pre-AER decon task failure")]
-        [EnumMember]
+        [EnumMember(Value = "PreAerDeconTaskFailure")]
         PreAerDeconTaskFailure = 562,
 
         [Description("Assigned to AER")]
-        [EnumMember]
+        [EnumMember(Value = "AssignedToAer")]
         AssignedToAer = 563,
 
         [Description("Removed from AER")]
-        [EnumMember]
+        [EnumMember(Value = "RemovedFromAer")]
         RemovedFromAer = 564,
 
         [Description("AER start")]
-        [EnumMember]
+        [EnumMember(Value = "AerStart")]
         AerStart = 565,
 
         [Description("AER passed")]
-        [EnumMember]
+        [EnumMember(Value = "AerPassed")]
         AerPassed = 566,
 
         [Description("AER failed")]
-        [EnumMember]
+        [EnumMember(Value = "AerFailed")]
         AerFailed = 567,
 
         [Description("Vacuum Packed - Wet")]
-        [EnumMember]
+        [EnumMember(Value = "VacuumPackedWet")]
         VacuumPackedWet = 568,
 
         [Description("Vacuum Packed - Dry")]
-        [EnumMember]
+        [EnumMember(Value = "VacuumPackedDry")]
         VacuumPackedDry = 569,
 
         [Description("Removed from Drying Cabinet - Automatic")]
-        [EnumMember]
+        [EnumMember(Value = "RemovedFromDryingCabinetAutomatic")]
         RemovedFromDryingCabinetAutomatic = 570,
 
         [Description("Endoscopy Dispatch")]
-        [EnumMember]
+        [EnumMember(Value = "EndoscopyDispatch")]
         EndoscopyDispatch = 595,
 
         #endregion
@@ -710,97 +712,97 @@ namespace SynergyApplicationFrameworkApi.Application.DTOs
         #region Non Steam Autoclaves
 
         [Description("Fail Batch Pre-Non-Steam Injection")]
-        [EnumMember]
+        [EnumMember(Value = "FailBatchPreNonSteamInjectionWithReassign")]
         FailBatchPreNonSteamInjectionWithReassign = 571,
 
         [Description("Fail Batch Post-Non-Steam Injection")]
-        [EnumMember]
+        [EnumMember(Value = "FailBatchPostNonSteamInjection")]
         FailBatchPostNonSteamInjection = 572,
 
         [Description("Fail PreNonSteam Batch - Without Reassign")]
-        [EnumMember]
+        [EnumMember(Value = "FailBatchPreNonSteamInjectionWithoutReassign")]
         FailBatchPreNonSteamInjectionWithoutReassign = 573,
 
         #endregion
 
         #region TrolleyDispatch
         [Description("Trolley Started")]
-        [EnumMember]
+        [EnumMember(Value = "TrolleyStarted")]
         TrolleyStarted = 574,
 
         [Description("Trolley Stopped")]
-        [EnumMember]
+        [EnumMember(Value = "TrolleyStopped")]
         TrolleyStopped = 575,
 
         [Description("Added To Trolley")]
-        [EnumMember]
+        [EnumMember(Value = "AddedToTrolley")]
         AddedToTrolley = 576,
 
         [Description("Removed From Trolley")]
-        [EnumMember]
+        [EnumMember(Value = "RemovedFromTrolley")]
         RemovedFromTrolley = 577,
 
         [Description("Trolley Dispatched")]
-        [EnumMember]
+        [EnumMember(Value = "TrolleyDispatched")]
         TrolleyDispatched = 578,
 
         [Description("Turnaround can now be added to any customer trolley")]
-        [EnumMember]
+        [EnumMember(Value = "TrolleyCustomerRestrictionDisabled")]
         TrolleyCustomerRestrictionDisabled = 579,
 
         [Description("Turnaround can no longer be added to any customer trolley")]
-        [EnumMember]
+        [EnumMember(Value = "TrolleyCustomerRestrictionEnabled")]
         TrolleyCustomerRestrictionEnabled = 580,
 
         #endregion
 
         [Description("PM skipped: Customer settings")]
-        [EnumMember]
+        [EnumMember(Value = "PmSkippedCustomerSettings")]
         PmSkippedCustomerSettings = 590,
 
         [Description("PM skipped: Maintenance Report Type settings")]
-        [EnumMember]
+        [EnumMember(Value = "PmSkippedMaintenanceReportTypeSettings")]
         PmSkippedMaintenanceReportTypeSettings = 591,
 
         [Description("PM skipped: Container minimum capacity")]
-        [EnumMember]
+        [EnumMember(Value = "PmSkippedContainerMinimumCapacity")]
         PmSkippedContainerMinimumCapacity = 592,
 
         [Description("PM skipped: Container maximum capacity")]
-        [EnumMember]
+        [EnumMember(Value = "PmSkippedContainerMaximumCapacity")]
         PmSkippedContainerMaximumCapacity = 593,
 
         [Description("Unassigned from batch tag")]
-        [EnumMember]
+        [EnumMember(Value = "UnassignedFromBatchTag")]
         UnassignedFromBatchTag = 594,
 
         [Description("Supervisor Approval")]
-        [EnumMember]
+        [EnumMember(Value = "SupervisorApproval")]
         SupervisorApproval = 596,
 
         [Description("Autoclave Cooldown Override")]
-        [EnumMember]
+        [EnumMember(Value = "AutoclaveCooldownOverride")]
         AutoclaveCooldownOverride = 597,
 
         [Description("Received For Another Loan Kit")]
-        [EnumMember]
+        [EnumMember(Value = "ReceivedForAnotherLoanKit")]
         ReceivedForAnotherLoanKit = 598,
 
         #region Transit
         [Description("In Transit")]
-        [EnumMember]
+        [EnumMember(Value = "InTransit")]
         InTransit = 700,
 
         [Description("Transit Cancelled")]
-        [EnumMember]
+        [EnumMember(Value = "CancelTransit")]
         CancelTransit = 701,
 
         [Description("Offline - In Transit")]
-        [EnumMember]
+        [EnumMember(Value = "OfflineTransit")]
         OfflineTransit = 702,
 
         [Description("Offline - Transit Cancelled")]
-        [EnumMember]
+        [EnumMember(Value = "OfflineTransitCancelled")]
         OfflineTransitCancelled = 703,
 
         #endregion

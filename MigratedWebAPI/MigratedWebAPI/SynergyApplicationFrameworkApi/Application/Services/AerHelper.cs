@@ -1,4 +1,4 @@
-using SynergyApplicationFrameworkApi.Application.DTOsContracts.Scan;
+using SynergyApplicationFrameworkApi.Application.DTOs.Scan;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace SynergyApplicationFrameworkApi.Application.Services
 {

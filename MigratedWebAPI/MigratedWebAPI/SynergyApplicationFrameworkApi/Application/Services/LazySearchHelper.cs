@@ -1,10 +1,11 @@
-using SynergyApplicationFrameworkApi.Application.Data.Interfaces.Operative.Search;
-using SynergyApplicationFrameworkApi.Application.Services.Website.DataContracts.Search;
+using SynergyApplicationFrameworkApi.Application.DTOs.Interfaces.Operative.Search;
+using SynergyApplicationFrameworkApi.Application.DTOs.Search;
 using System.Collections.Generic;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using SynergyApplicationFrameworkApi.Application.DTOs;
 
 namespace SynergyApplicationFrameworkApi.Application.Services
 {
@@ -25,7 +26,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchSummaryToData operation
         /// </summary>
-        public static OmniSearchSummaryData ConvertOmniSearchSummaryToData(IOmniSearchSummary omniSearchSummary)
+        public static OmniSearchSummaryData? ConvertOmniSearchSummaryToData(IOmniSearchSummary? omniSearchSummary)
         {
             return omniSearchSummary == null
                        ? null
@@ -35,7 +36,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
                                                    omniSearchSummary.Instances,
                                                    omniSearchSummary.Turnarounds,
                                                    omniSearchSummary.DeliveryNotes,
-                                                   omniSearchSummary.Defects, omniSearchSummary.Batches, 
+                                                   omniSearchSummary.Defects, omniSearchSummary.Batches,
                                                    omniSearchSummary.DeliveryPoints,
                                                    omniSearchSummary.Instruments,
                                                    omniSearchSummary.LoanSets);
@@ -54,8 +55,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchFacilityDetailToData operation
         /// </summary>
-        public static OmniSearchFacilityDetailData ConvertOmniSearchFacilityDetailToData(
-            IOmniSearchFacilityDetail omniSearchFacilityDetail)
+        public static OmniSearchFacilityDetailData? ConvertOmniSearchFacilityDetailToData(
+            IOmniSearchFacilityDetail? omniSearchFacilityDetail)
         {
             return omniSearchFacilityDetail == null
                        ? null
@@ -72,8 +73,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchFacilityDetailsToData operation
         /// </summary>
-        public static IList<OmniSearchFacilityDetailData> ConvertOmniSearchFacilityDetailsToData(
-            IList<IOmniSearchFacilityDetail> omniSearchFacilityDetails)
+        public static IList<OmniSearchFacilityDetailData>? ConvertOmniSearchFacilityDetailsToData(
+            IList<IOmniSearchFacilityDetail>? omniSearchFacilityDetails)
         {
             return omniSearchFacilityDetails == null
                        ? null
@@ -93,8 +94,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchCustomerDetailToData operation
         /// </summary>
-        public static OmniSearchCustomerDetailData ConvertOmniSearchCustomerDetailToData(
-            IOmniSearchCustomerDetail omniSearchCustomerDetail)
+        public static OmniSearchCustomerDetailData? ConvertOmniSearchCustomerDetailToData(
+            IOmniSearchCustomerDetail? omniSearchCustomerDetail)
         {
             return omniSearchCustomerDetail == null
                        ? null
@@ -106,7 +107,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
                                                           omniSearchCustomerDetail.FacilityName,
                                                           omniSearchCustomerDetail.FacilityId,
                                                           omniSearchCustomerDetail.CustomerGroupName,
-                                                          omniSearchCustomerDetail.CustomerGroupId, 
+                                                          omniSearchCustomerDetail.CustomerGroupId,
                                                           omniSearchCustomerDetail.IsArchived);
         }
 
@@ -119,8 +120,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchCustomerDetailsToData operation
         /// </summary>
-        public static IList<OmniSearchCustomerDetailData> ConvertOmniSearchCustomerDetailsToData(
-            IList<IOmniSearchCustomerDetail> omniSearchCustomerDetails)
+        public static IList<OmniSearchCustomerDetailData>? ConvertOmniSearchCustomerDetailsToData(
+            IList<IOmniSearchCustomerDetail>? omniSearchCustomerDetails)
         {
             return omniSearchCustomerDetails == null
                        ? null
@@ -140,8 +141,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchItemDetailToData operation
         /// </summary>
-        public static OmniSearchItemDetailData ConvertOmniSearchItemDetailToData(
-            IOmniSearchItemDetail omniSearchItemDetail)
+        public static OmniSearchItemDetailData? ConvertOmniSearchItemDetailToData(
+            IOmniSearchItemDetail? omniSearchItemDetail)
         {
             return omniSearchItemDetail == null
                        ? null
@@ -167,8 +168,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchItemDetailsToData operation
         /// </summary>
-        public static IList<OmniSearchItemDetailData> ConvertOmniSearchItemDetailsToData(
-            IList<IOmniSearchItemDetail> omniSearchItemDetails)
+        public static IList<OmniSearchItemDetailData>? ConvertOmniSearchItemDetailsToData(
+            IList<IOmniSearchItemDetail>? omniSearchItemDetails)
         {
             return omniSearchItemDetails == null
                        ? null
@@ -188,8 +189,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchInstanceDetailToData operation
         /// </summary>
-        public static OmniSearchInstanceDetailData ConvertOmniSearchInstanceDetailToData(
-            IOmniSearchInstanceDetail omniSearchInstanceDetail)
+        public static OmniSearchInstanceDetailData? ConvertOmniSearchInstanceDetailToData(
+            IOmniSearchInstanceDetail? omniSearchInstanceDetail)
         {
             return omniSearchInstanceDetail == null
                        ? null
@@ -213,8 +214,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchInstanceDetailsToData operation
         /// </summary>
-        public static IList<OmniSearchInstanceDetailData> ConvertOmniSearchInstanceDetailsToData(
-            IList<IOmniSearchInstanceDetail> omniSearchInstanceDetails)
+        public static IList<OmniSearchInstanceDetailData>? ConvertOmniSearchInstanceDetailsToData(
+            IList<IOmniSearchInstanceDetail>? omniSearchInstanceDetails)
         {
             return omniSearchInstanceDetails == null
                        ? null
@@ -234,8 +235,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchTurnaroundDetailToData operation
         /// </summary>
-        public static OmniSearchTurnaroundDetailData ConvertOmniSearchTurnaroundDetailToData(
-            IOmniSearchTurnaroundDetail omniSearchTurnaroundDetail)
+        public static OmniSearchTurnaroundDetailData? ConvertOmniSearchTurnaroundDetailToData(
+            IOmniSearchTurnaroundDetail? omniSearchTurnaroundDetail)
         {
             return omniSearchTurnaroundDetail == null
                        ? null
@@ -265,8 +266,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchTurnaroundDetailsToData operation
         /// </summary>
-        public static IList<OmniSearchTurnaroundDetailData> ConvertOmniSearchTurnaroundDetailsToData(
-            IList<IOmniSearchTurnaroundDetail> omniSearchTurnaroundDetails)
+        public static IList<OmniSearchTurnaroundDetailData>? ConvertOmniSearchTurnaroundDetailsToData(
+            IList<IOmniSearchTurnaroundDetail>? omniSearchTurnaroundDetails)
         {
             return omniSearchTurnaroundDetails == null
                        ? null
@@ -286,8 +287,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchDeliveryNotesDetailToData operation
         /// </summary>
-        public static OmniSearchDeliveryNotesDetailData ConvertOmniSearchDeliveryNotesDetailToData(
-            IOmniSearchDeliveryNotesDetail omniSearchDeliveryNotesDetail)
+        public static OmniSearchDeliveryNotesDetailData? ConvertOmniSearchDeliveryNotesDetailToData(
+            IOmniSearchDeliveryNotesDetail? omniSearchDeliveryNotesDetail)
         {
             return omniSearchDeliveryNotesDetail == null
                        ? null
@@ -316,8 +317,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchDeliveryNotesDetailsToData operation
         /// </summary>
-        public static IList<OmniSearchDeliveryNotesDetailData> ConvertOmniSearchDeliveryNotesDetailsToData(
-            IList<IOmniSearchDeliveryNotesDetail> omniSearchDeliveryNotesDetails)
+        public static IList<OmniSearchDeliveryNotesDetailData>? ConvertOmniSearchDeliveryNotesDetailsToData(
+            IList<IOmniSearchDeliveryNotesDetail>? omniSearchDeliveryNotesDetails)
         {
             return omniSearchDeliveryNotesDetails == null
                        ? null
@@ -337,8 +338,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchDefectDetailData operation
         /// </summary>
-        public static OmniSearchDefectsDetailData ConvertOmniSearchDefectDetailData(
-            IOmniSearchDefectsDetail omniSearchDefectsDetail)
+        public static OmniSearchDefectsDetailData? ConvertOmniSearchDefectDetailData(
+            IOmniSearchDefectsDetail? omniSearchDefectsDetail)
         {
             return omniSearchDefectsDetail == null
                        ? null
@@ -371,8 +372,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchDefectDetailsData operation
         /// </summary>
-        public static IList<OmniSearchDefectsDetailData> ConvertOmniSearchDefectDetailsData(
-            IList<IOmniSearchDefectsDetail> omniSearchDefectsDetails)
+        public static IList<OmniSearchDefectsDetailData>? ConvertOmniSearchDefectDetailsData(
+            IList<IOmniSearchDefectsDetail>? omniSearchDefectsDetails)
         {
             return omniSearchDefectsDetails == null
                        ? null
@@ -392,8 +393,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchUserDetailData operation
         /// </summary>
-        public static OmniSearchUserDetailData ConvertOmniSearchUserDetailData(
-            IOmniSearchUserDetail omniSearchUserDetail)
+        public static OmniSearchUserDetailData? ConvertOmniSearchUserDetailData(
+            IOmniSearchUserDetail? omniSearchUserDetail)
         {
             return omniSearchUserDetail == null
                        ? null
@@ -416,8 +417,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchUserDetailsData operation
         /// </summary>
-        public static IList<OmniSearchUserDetailData> ConvertOmniSearchUserDetailsData(
-            IList<IOmniSearchUserDetail> omniSearchUserDetails)
+        public static IList<OmniSearchUserDetailData>? ConvertOmniSearchUserDetailsData(
+            IList<IOmniSearchUserDetail>? omniSearchUserDetails)
         {
             return omniSearchUserDetails == null
                        ? null
@@ -436,8 +437,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchBatchData operation
         /// </summary>
-        public static OmniSearchBatchDetailData ConvertOmniSearchBatchData(
-            IOmniSearchBatchDetail omniSearchUserDetail)
+        public static OmniSearchBatchDetailData? ConvertOmniSearchBatchData(
+            IOmniSearchBatchDetail? omniSearchUserDetail)
         {
             return omniSearchUserDetail == null
                        ? null
@@ -455,8 +456,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchDeliveryPointData operation
         /// </summary>
-        public static OmniSearchDeliveryPointDetailData ConvertOmniSearchDeliveryPointData(
-            IOmniSearchDeliveryPointDetail omniSearchDetail)
+        public static OmniSearchDeliveryPointDetailData? ConvertOmniSearchDeliveryPointData(
+            IOmniSearchDeliveryPointDetail? omniSearchDetail)
         {
             return omniSearchDetail == null
                        ? null
@@ -473,8 +474,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchLoanSetsData operation
         /// </summary>
-        public static OmniSearchLoanSetsDetailData ConvertOmniSearchLoanSetsData(
-            IOmniSearchLoanSetsDetail omniSearchDetail)
+        public static OmniSearchLoanSetsDetailData? ConvertOmniSearchLoanSetsData(
+            IOmniSearchLoanSetsDetail? omniSearchDetail)
         {
             return omniSearchDetail == null
                        ? null
@@ -497,8 +498,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchBatchDetailsData operation
         /// </summary>
-        public static IList<OmniSearchBatchDetailData> ConvertOmniSearchBatchDetailsData(
-            IList<IOmniSearchBatchDetail> omniSearchUserDetails)
+        public static IList<OmniSearchBatchDetailData>? ConvertOmniSearchBatchDetailsData(
+            IList<IOmniSearchBatchDetail>? omniSearchUserDetails)
         {
             return omniSearchUserDetails == null
                        ? null
@@ -514,8 +515,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchDeliveryPointDetailsData operation
         /// </summary>
-        public static IList<OmniSearchDeliveryPointDetailData> ConvertOmniSearchDeliveryPointDetailsData(
-            IList<IOmniSearchDeliveryPointDetail> omniSearchDetails)
+        public static IList<OmniSearchDeliveryPointDetailData>? ConvertOmniSearchDeliveryPointDetailsData(
+            IList<IOmniSearchDeliveryPointDetail>? omniSearchDetails)
         {
             return omniSearchDetails == null
                        ? null
@@ -531,8 +532,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchLoanSetsDetailsData operation
         /// </summary>
-        public static IList<OmniSearchLoanSetsDetailData> ConvertOmniSearchLoanSetsDetailsData(
-            IList<IOmniSearchLoanSetsDetail> omniSearchDetails)
+        public static IList<OmniSearchLoanSetsDetailData>? ConvertOmniSearchLoanSetsDetailsData(
+            IList<IOmniSearchLoanSetsDetail>? omniSearchDetails)
         {
             return omniSearchDetails == null
                        ? null
@@ -551,7 +552,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// ConvertOmniSearchToData operation
         /// </summary>
-        public static OmniSearchData ConvertOmniSearchToData(IOmniSearch omniSearch)
+        public static OmniSearchData? ConvertOmniSearchToData(IOmniSearch? omniSearch)
         {
             return omniSearch == null
                        ? null

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 using System.Linq;
-using SynergyApplicationFrameworkApi.Application.DTOsContracts.ContainerInstanceIdentifiers;
+using SynergyApplicationFrameworkApi.Application.DTOs.ContainerInstanceIdentifiers;
 using System.Threading.Tasks;
 using System.Text;
 using System.ComponentModel.DataAnnotations;

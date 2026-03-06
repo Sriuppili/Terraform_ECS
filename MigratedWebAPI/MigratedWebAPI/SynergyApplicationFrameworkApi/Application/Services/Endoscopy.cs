@@ -1,12 +1,18 @@
-using SynergyApplicationFrameworkApi.Application.DTOs.Helpers;
-using SynergyApplicationFrameworkApi.Application.DTOsContracts.Endoscopy;
+using SynergyApplicationFrameworkApi.Application.DTOs.Endoscopy;
 using SynergyApplicationFrameworkApi.Application.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Text;
 using System.ComponentModel.DataAnnotations;
+using SynergyApplicationFrameworkApi.Application.DTOs;
+using SynergyApplicationFrameworkApi.Core.Models;
+using SynergyApplicationFrameworkApi.Framework;
+using SynergyApplicationFrameworkApi.Data.Contracts;
+using SynergyApplicationFrameworkApi.Data.Repositories;
+using SynergyApplicationFrameworkApi.Core.Enums;
+using SynergyApplicationFrameworkApi.Application.Helpers;
+using SynergyApplicationFrameworkApi.Application.Contracts;
 
 namespace SynergyApplicationFrameworkApi.Application.Services
 {
@@ -15,7 +21,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
     /// </summary>
     public class Endoscopy : TurnaroundEvents
     {
-        private new Helpers.Endoscopy.EndoscopyDeconTasksData _data => (Helpers.Endoscopy.EndoscopyDeconTasksData)base._data;
+        private new EndoscopyDeconTasksData _data => (EndoscopyDeconTasksData)base._data;
 
         public Endoscopy(SynergyTrakData data) : base(data)
         {
@@ -25,7 +31,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// PreAerDeconTaskSuccess operation
         /// </summary>
-        public void PreAerDeconTaskSuccess(ScanAssetDataContract scanAssetDataContract, Helpers.Endoscopy.EndoscopyDeconTaskScanDetails endoscopyDeconTaskScanDetails)
+        public void PreAerDeconTaskSuccess(ScanAssetDataContract scanAssetDataContract, EndoscopyDeconTaskScanDetails endoscopyDeconTaskScanDetails)
         {
             CreatePreAerDeconTaskEvent(scanAssetDataContract, endoscopyDeconTaskScanDetails, BatchStatusIdentifier.Passed, TurnAroundEventTypeIdentifier.PreAerDeconTaskSuccess);
         }
@@ -34,14 +40,14 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// PreAerDeconTaskFailure operation
         /// </summary>
-        public void PreAerDeconTaskFailure(ScanAssetDataContract scanAssetDataContract, Helpers.Endoscopy.EndoscopyDeconTaskScanDetails endoscopyDeconTaskScanDetails)
+        public void PreAerDeconTaskFailure(ScanAssetDataContract scanAssetDataContract, EndoscopyDeconTaskScanDetails endoscopyDeconTaskScanDetails)
         {
             CreatePreAerDeconTaskEvent(scanAssetDataContract, endoscopyDeconTaskScanDetails, BatchStatusIdentifier.Failed, TurnAroundEventTypeIdentifier.PreAerDeconTaskFailure);
         }
 
         private (int? BatchId, int? ErrorCode) GetOrCreateAvailableBatch(IUnitOfWork workUnit, ScanDetails scanDetails, string batchName, bool validateBatchNotStarted, BatchCycleTypeIdentifier? batchCycleType = null)
         {
-            var batchRepository = BatchRepository.New(workUnit);
+            var batchRepository = new BatchRepository(workUnit);
             var lastBatch = batchRepository.GetLastBatchByMachineId(scanDetails.MachineId.Value);
 
             BatchCreatedDataContract newBatch = null;
@@ -95,7 +101,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
                     return;
                 }
 
-                var containerInstanceRepository = ContainerInstanceRepository.New(workUnit);
+                var containerInstanceRepository = new ContainerInstanceRepository(workUnit);
 
                 if (scanAssetDataContract.ErrorCode == null)
                 {
@@ -133,9 +139,10 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// </summary>
         public void RemovedFromAer(ScanAssetDataContract scanAssetDataContract, ScanDetails scanDetails)
         {
+            using (var workUnit = UnitOfWorkFactory.CreateOperativeEFUnitOfWork())
             {
-                var batchRepository = BatchRepository.New(workUnit);
-                var containerInstanceRepository = ContainerInstanceRepository.New(workUnit);
+                var batchRepository = new BatchRepository(workUnit);
+                var containerInstanceRepository = new ContainerInstanceRepository(workUnit);
                 var scope = containerInstanceRepository.Get(scanDetails.InstanceId.Value);
 
                 var lastBatch = batchRepository.GetLastBatchByMachineId(scanDetails.MachineId.Value);
@@ -170,10 +177,11 @@ namespace SynergyApplicationFrameworkApi.Application.Services
             }
         }
 
-        private void CreatePreAerDeconTaskEvent(ScanAssetDataContract scanAssetDataContract, Helpers.Endoscopy.EndoscopyDeconTaskScanDetails endoscopyDeconTaskScanDetails, BatchStatusIdentifier batchStatusIdentifier, TurnAroundEventTypeIdentifier eventType)
+        private void CreatePreAerDeconTaskEvent(ScanAssetDataContract scanAssetDataContract, EndoscopyDeconTaskScanDetails endoscopyDeconTaskScanDetails, BatchStatusIdentifier batchStatusIdentifier, TurnAroundEventTypeIdentifier eventType)
         {
+            using (var workUnit = UnitOfWorkFactory.CreateOperativeEFUnitOfWork())
             {
-                var batchRepository = BatchRepository.New(workUnit);
+                var batchRepository = new BatchRepository(workUnit);
 
                 var newBatch = BatchFactory.CreateEntity(workUnit,
                     externalId: endoscopyDeconTaskScanDetails.Created.Value.Ticks.ToString(),
@@ -263,8 +271,9 @@ namespace SynergyApplicationFrameworkApi.Application.Services
             scanAssetDataContract.ChildItems.AddRange(scanDcList);
             if (scanAssetDataContract.ErrorCode == null)
             {
+                using (var workUnit = UnitOfWorkFactory.CreateOperativeEFUnitOfWork())
                 {
-                    var containerInstanceRepository = ContainerInstanceRepository.New(workUnit);
+                    var containerInstanceRepository = new ContainerInstanceRepository(workUnit);
 
                     foreach (var dc in scanDcList)
                     {
@@ -301,8 +310,9 @@ namespace SynergyApplicationFrameworkApi.Application.Services
             var scanDcList = CreateScanAssetDataContractsForAerBatch(scanDetails.BatchId.Value);
             var turnaroundEventMapping = ApplyEvent(eventsToApply, scanDcList, scanDetails, true);
             scanAssetDataContract.ChildItems.AddRange(scanDcList);
+            using (var workUnit = UnitOfWorkFactory.CreateOperativeEFUnitOfWork())
             {
-                var containerInstanceRepository = ContainerInstanceRepository.New(workUnit);
+                var containerInstanceRepository = new ContainerInstanceRepository(workUnit);
 
                 foreach (var dc in scanDcList)
                 {
@@ -339,8 +349,9 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// </summary>
         public void IntoDryingCabinet(ScanAssetDataContract scanAssetDataContract, EndoscopeStorageScanDetails scanDetails)
         {
+            using (var workUnit = UnitOfWorkFactory.CreateOperativeEFUnitOfWork())
             {
-                var containerInstanceRepository = ContainerInstanceRepository.New(workUnit);
+                var containerInstanceRepository = new ContainerInstanceRepository(workUnit);
 
                 var containerSearchResult = new List<ContainerInstance>();
                 if (scanDetails.InstanceId != null)
@@ -371,8 +382,9 @@ namespace SynergyApplicationFrameworkApi.Application.Services
 
             if (scanAssetDataContract.ErrorCode == null)
             {
+                using (var workUnit = UnitOfWorkFactory.CreateOperativeEFUnitOfWork())
                 {
-                    var containerInstanceRepository = ContainerInstanceRepository.New(workUnit);
+                    var containerInstanceRepository = new ContainerInstanceRepository(workUnit);
                     var container = containerInstanceRepository.GetContainerInstanceByTurnaround(scanAssetDataContract.TurnaroundId.Value);
                     var turnaround = ((ContainerInstance)container).CurrentTurnaround;
 
@@ -427,6 +439,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// </summary>
         public void VacuumPacked(ScanAssetDataContract scanAssetDataContract, ScanDetails scanDetails)
         {
+            using (var workUnit = UnitOfWorkFactory.CreateOperativeEFUnitOfWork())
             {
                 var batchResult = GetOrCreateAvailableBatch(workUnit, scanDetails, null, false);
 
@@ -440,7 +453,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
 
                 ContainerInstance container;
 
-                var containerInstanceRepository = ContainerInstanceRepository.New(workUnit);
+                var containerInstanceRepository = new ContainerInstanceRepository(workUnit);
                 if (scanDetails.InstanceId != null)
                 {
                     container = containerInstanceRepository.Get(scanDetails.InstanceId.Value);
@@ -449,7 +462,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
                 {
                     container = containerInstanceRepository.PreSearchContainerInstance(scanDetails.ExternalId, scanDetails.FacilityId, false).FirstOrDefault();
                 }
-                var machineRepository = MachineRepository.New(workUnit);
+                var machineRepository = new MachineRepository(workUnit);
                 var machine = machineRepository.Get(scanDetails.MachineId.Value);
 
                 if (machine == null || machine.MachineTypeId != (byte)MachineTypeIdentifier.VacuumPacker)
@@ -481,7 +494,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
                 if (scanAssetDataContract.ErrorCode == null)
                 {
                     SterileExpiryHelper.UpdateSterileExpiry(scanAssetDataContract.TurnaroundId.Value, eventType, machineId: scanDetails.MachineId);
-                    var batchRepository = BatchRepository.New(workUnit);
+                    var batchRepository = new BatchRepository(workUnit);
                     var batch = batchRepository.Get(scanDetails.BatchId.Value);
 
                     batch.BatchStatusId = (int)BatchStatusIdentifier.Passed;
@@ -497,8 +510,9 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         private List<ScanAssetDataContract> CreateScanAssetDataContractsForAerBatch(int batchId)
         {
             var scanDcList = new List<ScanAssetDataContract>();
+            using (var workUnit = UnitOfWorkFactory.CreateOperativeEFUnitOfWork())
             {
-                var batchRepository = BatchRepository.New(workUnit);
+                var batchRepository = new BatchRepository(workUnit);
                 var batch = batchRepository.Get(batchId);
 
                 foreach (var turnaround in batch.CurrentlyAssignedTurnarounds)

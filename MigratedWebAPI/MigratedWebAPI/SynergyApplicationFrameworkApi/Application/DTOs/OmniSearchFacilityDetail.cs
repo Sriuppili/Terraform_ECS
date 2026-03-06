@@ -1,4 +1,4 @@
-using SynergyApplicationFrameworkApi.Application.Data.Interfaces.Operative.Search;
+using SynergyApplicationFrameworkApi.Application.DTOs.Interfaces.Operative.Search;
 using System;
 using System.Collections.Generic;
 using System.Linq;

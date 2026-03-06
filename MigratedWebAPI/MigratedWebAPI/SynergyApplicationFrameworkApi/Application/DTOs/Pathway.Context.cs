@@ -7,9 +7,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SynergyApplicationFrameworkApi.Application.DTOs
 {
-    using System.Data.Entity;
-    using System.Data.Entity.Infrastructure;
-    using System.Data.Entity.Core.Objects;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Infrastructure;
+    using Microsoft.EntityFrameworkCore.Core.Objects;
     
     public partial class OperativeModelContainer : DbContext
     {

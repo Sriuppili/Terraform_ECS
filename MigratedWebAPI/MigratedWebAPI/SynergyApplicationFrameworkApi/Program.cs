@@ -1,147 +1,105 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
+using AutoMapper;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Serilog;
-using SynergyApplicationFrameworkApi.Infrastructure.Data;
-using SynergyApplicationFrameworkApi.Middleware;
-using System.Reflection;
-
-// Configure Serilog
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .WriteTo.File("logs/synergy-api-.txt", rollingInterval: RollingInterval.Day)
-    .CreateLogger();
+using System;
+using System.IO;
 
 try
 {
+    // ----------------------------
+    // Setup Serilog early
+    // ----------------------------
+    var logPath = @"C:\log";
+    if (!Directory.Exists(logPath))
+    {
+        Directory.CreateDirectory(logPath);
+    }
+
+    Log.Logger = new LoggerConfiguration()
+        .MinimumLevel.Debug()
+        .WriteTo.Console()
+        .WriteTo.File(Path.Combine(logPath, "app.log"), rollingInterval: RollingInterval.Day)
+        .CreateLogger();
+
+    Log.Information("Starting SynergyApplicationFrameworkApi...");
+
+    // ----------------------------
+    // Create builder and load config
+    // ----------------------------
     var builder = WebApplication.CreateBuilder(args);
-    
+
     // Add Serilog
     builder.Host.UseSerilog();
-    
-    // Add services to the container
-    builder.Services.AddControllers()
-        .AddNewtonsoftJson(options =>
-        {
-            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-            options.SerializerSettings.DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat;
-        });
-    
-    // Database Context (if using Entity Framework)
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    if (!string.IsNullOrEmpty(connectionString))
+
+    // Load configuration from appsettings.json
+    builder.Configuration
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .AddEnvironmentVariables();
+
+    // Validate paths from AppSettings
+    var appSettings = builder.Configuration.GetSection("AppSettings");
+    var errorPath = appSettings["Synergy.Core.ErrorPath"];
+    if (!Directory.Exists(errorPath))
     {
-        // TODO: Uncomment when DbContext is ready
-        // builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        //     options.UseSqlServer(connectionString));
+        Log.Warning("ErrorPath '{Path}' does not exist. Creating...", errorPath);
+        Directory.CreateDirectory(errorPath);
     }
-    
-    // AutoMapper
-    builder.Services.AddAutoMapper(typeof(Program));
-    
-    // TODO: Register Application Services (based on Pathway.ServicesWCF structure)
-    // Example service registrations:
-    // builder.Services.AddScoped<IContainerService, ContainerService>();
-    // builder.Services.AddScoped<IDeliveryService, DeliveryService>();
-    // builder.Services.AddScoped<IBatchService, BatchService>();
-    
-    // TODO: Register Repositories
-    // Example repository registrations:
-    // builder.Services.AddScoped<IContainerRepository, ContainerRepository>();
-    
-    // Health Checks
-    builder.Services.AddHealthChecks();
-    
-    // API Explorer and Swagger
+
+    var ghostScriptPath = appSettings["GhostScriptPath"];
+    if (!File.Exists(ghostScriptPath))
+    {
+        Log.Warning("GhostScript executable not found at '{Path}'", ghostScriptPath);
+    }
+
+    // ----------------------------
+    // Add services
+    // ----------------------------
+    builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen(options =>
-    {
-        options.SwaggerDoc("v1", new OpenApiInfo
-        {
-            Title = "Synergy Application Framework API",
-            Version = "v1",
-            Description = "Migrated from WCF to .NET 8 Web API with comprehensive documentation",
-            Contact = new OpenApiContact
-            {
-                Name = "Development Team",
-                Email = "dev@synergy.com"
-            }
-        });
-        
-        // Include XML comments for Swagger
-        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-        if (File.Exists(xmlPath))
-            options.IncludeXmlComments(xmlPath);
-            
-        // Enable annotations
-        options.EnableAnnotations();
-    });
-    
-    // CORS Configuration
-    builder.Services.AddCors(options =>
-    {
-        options.AddPolicy("AllowSpecificOrigins", policy =>
-        {
-            policy.WithOrigins("http://localhost:3000", "https://localhost:3001")
-                  .AllowAnyMethod()
-                  .AllowAnyHeader()
-                  .AllowCredentials();
-        });
-        
-        // For development - allow all
-        options.AddPolicy("AllowAll", policy =>
-        {
-            policy.AllowAnyOrigin()
-                  .AllowAnyMethod()
-                  .AllowAnyHeader();
-        });
-    });
-    
+    builder.Services.AddSwaggerGen();
+
+    // Example: add AutoMapper
+    builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+    // Add EF DbContext here (pseudo example)
+    // builder.Services.AddDbContext<PathwayDbContext>(options =>
+    //     options.UseSqlServer(builder.Configuration.GetConnectionString("Pathway")));
+
+    // ----------------------------
+    // Build the app
+    // ----------------------------
     var app = builder.Build();
-    
-    // Configure the HTTP request pipeline
+
+    // ----------------------------
+    // Force HTTP for development/testing
+    // ----------------------------
+    app.Urls.Clear();
+    app.Urls.Add("http://localhost:5055");
+
+    // Enable Swagger if in Development
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
-        app.UseSwaggerUI(c =>
-        {
-            c.SwaggerEndpoint("/swagger/v1/swagger.json", "Synergy API v1");
-            c.RoutePrefix = string.Empty; // Serve Swagger at the root
-            c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.List);
-        });
-        app.UseCors("AllowAll");
+        app.UseSwaggerUI();
     }
-    else
-    {
-        app.UseExceptionHandler("/Error");
-        app.UseHsts();
-        app.UseCors("AllowSpecificOrigins");
-    }
-    
-    // Global exception handling middleware
-    app.UseMiddleware<ExceptionHandlingMiddleware>();
-    
-    app.UseHttpsRedirection();
-    app.UseStaticFiles();
-    
-    app.UseRouting();
-    
-    // Authentication & Authorization (uncomment when needed)
-    // app.UseAuthentication();
-    // app.UseAuthorization();
-    
-    // Health checks endpoint
-    app.MapHealthChecks("/health");
-    
+
+    // Optional: comment out HTTPS redirection for HTTP testing
+    // app.UseHttpsRedirection();
+
+    app.UseAuthorization();
     app.MapControllers();
-    
-    Log.Information("Starting Synergy Application Framework API");
+
+    Log.Information("SynergyApplicationFrameworkApi started successfully.");
     app.Run();
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "Application terminated unexpectedly");
+    Log.Fatal(ex, "Application startup failed!");
+    throw;
 }
 finally
 {

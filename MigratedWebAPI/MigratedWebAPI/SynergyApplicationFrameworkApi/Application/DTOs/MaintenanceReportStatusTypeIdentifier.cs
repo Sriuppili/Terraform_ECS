@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+using System.ComponentModel;
 
 namespace SynergyApplicationFrameworkApi.Application.DTOs
 {
@@ -19,27 +21,21 @@ namespace SynergyApplicationFrameworkApi.Application.DTOs
         Quarantine = 2,
 
         [EnumMember]
-        [Description("With Customer")]
         WithCustomer = 3,
 
         [EnumMember]
-        [Description("Waiting Quote")]
         WaitingQuote = 4,
 
         [EnumMember]
-        [Description("Sent For Repair")]
         SentForRepair = 5,
 
         [EnumMember]
-        [Description("Repair Unsatisfactory")]
         RepairUnsatisfactory = 6,
 
         [EnumMember]
-        [Description("Closed")]
         Closed = 13,
 
         [EnumMember]
-        [Description("Void")]
         Cancelled = 18,
 
         [EnumMember]
@@ -64,6 +60,7 @@ namespace SynergyApplicationFrameworkApi.Application.DTOs
         [EnumMember]
         SentForRepair = 3,
 
+        [EnumMember]
         QuotationReceived = 4,
 
         [EnumMember]

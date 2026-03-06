@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace SynergyApplicationFrameworkApi.Application.Services
 {

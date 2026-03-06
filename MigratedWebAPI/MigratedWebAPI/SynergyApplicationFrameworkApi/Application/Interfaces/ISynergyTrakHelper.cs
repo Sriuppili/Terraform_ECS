@@ -1,4 +1,4 @@
-using SynergyApplicationFrameworkApi.Application.DTOsContracts.Scan;
+using SynergyApplicationFrameworkApi.Application.DTOs.Scan;
 using System.Collections.Generic;
 using System;
 using System.Linq;

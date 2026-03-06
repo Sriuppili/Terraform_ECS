@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.Data.SqlClient;
+//using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
-
+using SynergyApplicationFrameworkApi.Application.Interfaces;
+using SynergyApplicationFrameworkApi.Application.DTOs;
 namespace SynergyApplicationFrameworkApi.Application.Services
 {
     /// <summary>

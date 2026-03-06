@@ -1,4 +1,4 @@
-using SynergyApplicationFrameworkApi.Application.DTOsContracts.Batch;
+using SynergyApplicationFrameworkApi.Application.DTOs.Batch;
 using System;
 using System.Linq;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-using SynergyApplicationFrameworkApi.Application.DTOsContracts.ContainerInstanceIdentifiers;
+using SynergyApplicationFrameworkApi.Application.DTOs.ContainerInstanceIdentifiers;
 using System.Collections.Generic;
 using System;
 using System.Linq;

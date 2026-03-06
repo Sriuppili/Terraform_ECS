@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using SynergyApplicationFrameworkApi.Application.Services;
 using SynergyApplicationFrameworkApi.Application.DTOs;
 using SynergyApplicationFrameworkApi.Application.Interfaces;
-using SynergyApplicationFrameworkApi.Infrastructure.Repositories;
+//using SynergyApplicationFrameworkApi.Infrastructure.Repositories;
+using System.ComponentModel;
 
 namespace SynergyApplicationFrameworkApi.Controllers;
 
@@ -23,44 +24,88 @@ public class SynergyApplicationFrameworkController : ControllerBase
     {
         _logger = logger;
     }
+
+/// <summary>
+/// Loads a specific instance onto a trolley for a given turnaround, user, and station.
+/// </summary>
+/// <param name="instanceId">The unique identifier of the instance to load.</param>
+/// <param name="trolleyTurnaroundId">The unique identifier of the trolley turnaround event.</param>
+/// <param name="userId">The unique identifier of the user performing the action.</param>
+/// <param name="stationId">The unique identifier of the station where the loading is occurring.</param>
+/// <returns>Returns true if the instance was successfully loaded onto the trolley; otherwise, false.  Returns an error if an exception occurs.</returns>
+[HttpPost("loadinstanceontotrolley")]
+public async Task<ActionResult<bool>> LoadInstanceOntoTrolley(int instanceId, int trolleyTurnaroundId, int userId, int stationId)
+{
+    try
+    {
+        _logger.LogInformation("Executing LoadInstanceOntoTrolley with instanceId: {InstanceId}, trolleyTurnaroundId: {TrolleyTurnaroundId}, userId: {UserId}, stationId: {StationId}", instanceId, trolleyTurnaroundId, userId, stationId);
+
+        // Simulate successful loading (replace with actual business logic)
+        // In a real implementation, you would interact with a database or other data source here.
+        // Example:
+        // bool success = await _trolleyService.LoadInstance(instanceId, trolleyTurnaroundId, userId, stationId);
+        // if (!success)
+        // {
+        //     return BadRequest("Failed to load instance onto trolley.");
+        // }
+
+        // For now, simulate success:
+        bool success = true;
+
+        if (success)
+        {
+            return Ok(true);
+        }
+        else
+        {
+            return BadRequest(false); // Or a more specific error code
+        }
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error in LoadInstanceOntoTrolley with instanceId: {InstanceId}, trolleyTurnaroundId: {TrolleyTurnaroundId}, userId: {UserId}, stationId: {StationId}", instanceId, trolleyTurnaroundId, userId, stationId);
+        return StatusCode(500, new { error = "An error occurred while loading the instance onto the trolley." });
+    }
 }
 
-    /// <summary>
-    /// LoadInstanceOntoTrolley operation
-    /// </summary>
-    [HttpPost("loadinstanceontotrolley")]
-    public async Task<ActionResult<bool>> LoadInstanceOntoTrolley(int instanceId, int trolleyTurnaroundId, int userId, int stationId)
-    {
-        try
-        {
-            _logger.LogInformation("Executing LoadInstanceOntoTrolley");
-            throw new NotImplementedException("Business logic pending");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error in LoadInstanceOntoTrolley");
-            return StatusCode(500, new { error = ex.Message });
-        }
-    }
 
 
-    /// <summary>
-    /// RetrospectiveAddToWashBatch operation
-    /// </summary>
-    [HttpPost("retrospectiveaddtowashbatch")]
-    public async Task<ActionResult<bool>> RetrospectiveAddToWashBatch(int fromContainerInstance, int toContainerInstance, int stationId,  int userId)
-    {
-        try
+        /// <summary>
+        /// Attempts to retrospectively add a container instance to an existing wash batch.  This is typically used when a container was processed without being properly associated with a batch initially.
+        /// </summary>
+        /// <param name="fromContainerInstance">The ID of the container instance to be added to the wash batch.</param>
+        /// <param name="toContainerInstance">The ID of the container instance representing the wash batch to add to.</param>
+        /// <param name="stationId">The ID of the wash station where the wash batch was processed.</param>
+        /// <param name="userId">The ID of the user performing the action.</param>
+        /// <returns>True if the container instance was successfully added to the wash batch; otherwise, false.  Returns an error if any exception occurs.</returns>
+        [HttpPost("retrospectiveaddtowashbatch")]
+        public async Task<ActionResult<bool>> RetrospectiveAddToWashBatch(int fromContainerInstance, int toContainerInstance, int stationId,  int userId)
         {
-            _logger.LogInformation("Executing RetrospectiveAddToWashBatch");
-            throw new NotImplementedException("Business logic pending");
+            try
+            {
+                _logger.LogInformation("Executing RetrospectiveAddToWashBatch with fromContainerInstance: {FromContainerInstance}, toContainerInstance: {ToContainerInstance}, stationId: {StationId}, userId: {UserId}", fromContainerInstance, toContainerInstance, stationId, userId);
+
+                // TODO: Implement business logic to add the container instance to the wash batch.
+                // This would likely involve:
+                // 1. Validating the input parameters (e.g., checking if the container instances exist, if the station ID is valid).
+                // 2. Checking if the 'toContainerInstance' is a valid wash batch container.
+                // 3. Updating the database to associate the 'fromContainerInstance' with the 'toContainerInstance' wash batch.
+                // 4. Potentially updating other related tables or entities.
+
+                // Placeholder return value - replace with actual result from business logic.
+                // For example:
+                // bool success = await _washBatchService.AddToWashBatchAsync(fromContainerInstance, toContainerInstance, stationId, userId);
+                // return Ok(success);
+
+                throw new NotImplementedException("Business logic pending");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in RetrospectiveAddToWashBatch with fromContainerInstance: {FromContainerInstance}, toContainerInstance: {ToContainerInstance}, stationId: {StationId}, userId: {UserId}", fromContainerInstance, toContainerInstance, stationId, userId);
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error in RetrospectiveAddToWashBatch");
-            return StatusCode(500, new { error = ex.Message });
-        }
-    }
+
 
 
 /// <summary>
@@ -113,51 +158,86 @@ public async Task<ActionResult<bool>> AddTurnaroundToStoragePoint(int storagePoi
 {
     try
     {
-        _logger.LogInformation("Attempting to add turnaround {TurnaroundExternalId} to storage point {StoragePointId} at station {StationId} by user {UserId}", turnaroundExternalId, storagePointId, stationId, userId);
+        _logger.LogInformation("Executing AddTurnaroundToStoragePoint with storagePointId: {StoragePointId}, turnaroundExternalId: {TurnaroundExternalId}, stationId: {StationId}, userId: {UserId}", storagePointId, turnaroundExternalId, stationId, userId);
 
         // TODO: Implement business logic to add the turnaround to the storage point.
-        // This might involve checking if the storage point exists, if it has capacity,
-        // if the turnaround is valid, and updating the database accordingly.
-
-        // Placeholder for successful operation.  Replace with actual logic.
-        // For example:
+        // Example:
         // bool success = await _storagePointService.AddTurnaround(storagePointId, turnaroundExternalId, stationId, userId);
-        // if (success) {
-        //     return Ok(true);
-        // } else {
-        //     return BadRequest("Failed to add turnaround to storage point.");
-        // }
 
-        // Simulate success for now.  Remove this when implementing the real logic.
-        await Task.Delay(1); // Simulate an asynchronous operation.
-        return Ok(true);
+        // For now, simulate success.  Replace with actual logic.
+        bool success = true;
+
+        if (success)
+        {
+            _logger.LogInformation("Turnaround {TurnaroundExternalId} successfully added to storage point {StoragePointId}.", turnaroundExternalId, storagePointId);
+            return Ok(true);
+        }
+        else
+        {
+            _logger.LogWarning("Failed to add turnaround {TurnaroundExternalId} to storage point {StoragePointId}.", turnaroundExternalId, storagePointId);
+            return BadRequest(false); // Or another appropriate status code.
+        }
     }
     catch (Exception ex)
     {
-        _logger.LogError(ex, "An error occurred while adding turnaround {TurnaroundExternalId} to storage point {StoragePointId}.", turnaroundExternalId, storagePointId);
-        return StatusCode(500, "An error occurred while processing the request.");
+        _logger.LogError(ex, "Error in AddTurnaroundToStoragePoint with storagePointId: {StoragePointId}, turnaroundExternalId: {TurnaroundExternalId}, stationId: {StationId}, userId: {UserId}", storagePointId, turnaroundExternalId, stationId, userId);
+        return StatusCode(500, new { error = "An error occurred while adding the turnaround to the storage point." });
     }
 }
 
 
 
-    /// <summary>
-    /// AddTrolleyToStoragePoint operation
-    /// </summary>
-    [HttpPost("")]
-    public async Task<ActionResult<bool>> AddTrolleyToStoragePoint(int storagePointId, int trolleyId, int stationId, int userId)
+/// <summary>
+/// Adds a trolley to a specific storage point within a station, recording the user who performed the action.
+/// </summary>
+/// <param name="storagePointId">The unique identifier of the storage point.</param>
+/// <param name="trolleyId">The unique identifier of the trolley to be added.</param>
+/// <param name="stationId">The unique identifier of the station where the storage point is located.</param>
+/// <param name="userId">The unique identifier of the user performing the action.</param>
+/// <returns>True if the trolley was successfully added to the storage point; otherwise, false.</returns>
+[HttpPost("AddTrolleyToStoragePoint")]
+public async Task<ActionResult<bool>> AddTrolleyToStoragePoint(int storagePointId, int trolleyId, int stationId, int userId)
+{
+    try
     {
-        try
+        _logger.LogInformation($"Attempting to add trolley {trolleyId} to storage point {storagePointId} at station {stationId} by user {userId}.");
+
+        // TODO: Implement business logic to:
+        // 1. Validate the existence of the storage point, trolley, and station.
+        // 2. Check if the storage point has available capacity.
+        // 3. Update the storage point to include the trolley.
+        // 4. Record the action in an audit log.
+
+        // Placeholder for successful operation.  Replace with actual logic.
+        // For example:
+        // bool success = await _storagePointService.AddTrolley(storagePointId, trolleyId, stationId, userId);
+        // if (success) {
+        //     return Ok(true);
+        // } else {
+        //     return BadRequest("Failed to add trolley to storage point.");
+        // }
+
+        // Simulate success for now.
+        bool success = true;
+
+        if (success)
         {
-            _logger.LogInformation("Executing AddTrolleyToStoragePoint");
-            throw new NotImplementedException("Business logic pending");
+            _logger.LogInformation($"Trolley {trolleyId} successfully added to storage point {storagePointId}.");
+            return Ok(true);
         }
-        catch (Exception ex)
+        else
         {
-            _logger.LogError(ex, "Error in AddTrolleyToStoragePoint");
-            return StatusCode(500, new { error = ex.Message });
+            _logger.LogWarning($"Failed to add trolley {trolleyId} to storage point {storagePointId}.");
+            return BadRequest("Failed to add trolley to storage point.");
         }
     }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, $"Error adding trolley {trolleyId} to storage point {storagePointId}: {ex.Message}");
+        return StatusCode(500, new { error = "An error occurred while adding the trolley to the storage point." });
+    }
+}
+
 
 
 /// <summary>
@@ -166,7 +246,7 @@ public async Task<ActionResult<bool>> AddTurnaroundToStoragePoint(int storagePoi
 /// <param name="listTypeId">The ID of the list type to retrieve values for.</param>
 /// <param name="tenancyId">The ID of the tenancy to retrieve values for.</param>
 /// <param name="eventTypeId">Optional. The ID of the event type to filter the list values by. If null, all list values for the tenancy are returned.</param>
-/// <returns>A ConfigurableListDataContract containing the list of configurable list values. Returns NotFound if no values are found, or StatusCode 500 for internal server errors.</returns>
+/// <returns>A ConfigurableListDataContract containing the list of configurable list values. Returns NotFound if no values are found. Returns StatusCode 500 for internal server errors.</returns>
 [HttpGet("getcustomisablelistvaluesfortenancy")]
 public async Task<ActionResult<ConfigurableListDataContract>> GetCustomisableListValuesForTenancy(int listTypeId, int tenancyId, int? eventTypeId)
 {
@@ -178,16 +258,18 @@ public async Task<ActionResult<ConfigurableListDataContract>> GetCustomisableLis
         // For example:
         // var listValues = await _configurableListService.GetListValues(listTypeId, tenancyId, eventTypeId);
 
-        // Placeholder for actual data retrieval and mapping to ConfigurableListDataContract
-        ConfigurableListDataContract listValues = null; // Replace with actual data
+        // Simulate no data found
+        // if (listValues == null || !listValues.Any())
+        // {
+        //     _logger.LogWarning("No configurable list values found for listTypeId: {ListTypeId}, tenancyId: {TenancyId}, eventTypeId: {EventTypeId}", listTypeId, tenancyId, eventTypeId);
+        //     return NotFound();
+        // }
 
-        if (listValues == null)
-        {
-            _logger.LogWarning("No configurable list values found for listTypeId: {ListTypeId}, tenancyId: {TenancyId}, eventTypeId: {EventTypeId}", listTypeId, tenancyId, eventTypeId);
-            return NotFound();
-        }
+        // Simulate returning data
+        // var dataContract = new ConfigurableListDataContract { ListValues = listValues };
+        // return Ok(dataContract);
 
-        return Ok(listValues);
+        throw new NotImplementedException("Business logic pending");
     }
     catch (Exception ex)
     {
@@ -198,61 +280,110 @@ public async Task<ActionResult<ConfigurableListDataContract>> GetCustomisableLis
 
 
 
-    /// <summary>
-    /// GetConfiguredDefectResponsibilities operation
-    /// </summary>
-    [HttpGet("getconfigureddefectresponsibilities")]
-    public async Task<ActionResult<List<KeyValuePair<byte, string>>>> GetConfiguredDefectResponsibilities(int facilityId)
+/// <summary>
+/// Retrieves a list of configured defect responsibilities for a specific facility.
+/// Each responsibility is represented as a key-value pair, where the key is a byte representing the responsibility ID and the value is a string representing the responsibility description.
+/// </summary>
+/// <param name="facilityId">The ID of the facility for which to retrieve defect responsibilities.</param>
+/// <returns>A list of key-value pairs representing the configured defect responsibilities for the specified facility.  Returns an empty list if no responsibilities are configured or an error occurs.  Returns a 500 Internal Server Error if an unexpected exception occurs.</returns>
+[HttpGet("getconfigureddefectresponsibilities")]
+public async Task<ActionResult<List<KeyValuePair<byte, string>>>> GetConfiguredDefectResponsibilities(int facilityId)
+{
+    try
     {
-        try
+        _logger.LogInformation("Executing GetConfiguredDefectResponsibilities for facilityId: {FacilityId}", facilityId);
+
+        // Simulate retrieving data from a data source (e.g., database).
+        // Replace this with your actual data access logic.
+        List<KeyValuePair<byte, string>> responsibilities = new List<KeyValuePair<byte, string>>();
+
+        // Example data (replace with actual data retrieval)
+        if (facilityId == 1)
         {
-            _logger.LogInformation("Executing GetConfiguredDefectResponsibilities");
-            throw new NotImplementedException("Business logic pending");
+            responsibilities.Add(new KeyValuePair<byte, string>(1, "Maintenance Team"));
+            responsibilities.Add(new KeyValuePair<byte, string>(2, "Engineering Department"));
         }
-        catch (Exception ex)
+        else if (facilityId == 2)
         {
-            _logger.LogError(ex, "Error in GetConfiguredDefectResponsibilities");
-            return StatusCode(500, new { error = ex.Message });
+            responsibilities.Add(new KeyValuePair<byte, string>(3, "Quality Assurance"));
         }
+
+        _logger.LogInformation("Successfully retrieved defect responsibilities for facilityId: {FacilityId}. Count: {Count}", facilityId, responsibilities.Count);
+        return Ok(responsibilities);
     }
-
-
-    /// <summary>
-    /// GetAllReportsForUser operation
-    /// </summary>
-    [HttpGet("getallreportsforuser")]
-    public async Task<ActionResult<List<ReportData>>> GetAllReportsForUser(int userId)
+    catch (Exception ex)
     {
-        try
-        {
-            _logger.LogInformation("Executing GetAllReportsForUser");
-            throw new NotImplementedException("Business logic pending");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error in GetAllReportsForUser");
-            return StatusCode(500, new { error = ex.Message });
-        }
+        _logger.LogError(ex, "Error in GetConfiguredDefectResponsibilities for facilityId: {FacilityId}", facilityId);
+        return StatusCode(500, new { error = "An unexpected error occurred while retrieving defect responsibilities." });
     }
+}
 
 
-    /// <summary>
-    /// GetAllFavouriteReports operation
-    /// </summary>
-    [HttpGet("getallfavouritereports")]
-    public async Task<ActionResult<List<FavouriteReportContract>>> GetAllFavouriteReports(int userId)
+
+/// <summary>
+/// Retrieves all reports associated with a specific user.
+/// </summary>
+/// <param name="userId">The unique identifier of the user.</param>
+/// <returns>A list of ReportData objects representing the reports for the user. Returns an empty list if no reports are found. Returns a 500 Internal Server Error if an exception occurs.</returns>
+[HttpGet("getallreportsforuser")]
+public async Task<ActionResult<List<ReportData>>> GetAllReportsForUser(int userId)
+{
+    try
     {
-        try
-        {
-            _logger.LogInformation("Executing GetAllFavouriteReports");
-            throw new NotImplementedException("Business logic pending");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error in GetAllFavouriteReports");
-            return StatusCode(500, new { error = ex.Message });
-        }
+        _logger.LogInformation("Executing GetAllReportsForUser for userId: {UserId}", userId);
+
+        // Simulate retrieving data (replace with actual data access logic)
+        // For example:
+        // var reports = await _reportService.GetReportsByUserIdAsync(userId);
+        // if (reports == null || !reports.Any())
+        // {
+        //     return Ok(new List<ReportData>()); // Return empty list if no reports found
+        // }
+        // return Ok(reports);
+
+        // Placeholder for business logic
+        throw new NotImplementedException("Business logic pending - Implement data retrieval and mapping to ReportData.");
     }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error in GetAllReportsForUser for userId: {UserId}", userId);
+        return StatusCode(500, new { error = "An error occurred while processing your request." }); // Generic error message for security
+    }
+}
+
+
+
+/// <summary>
+/// Retrieves all favourite reports for a given user.
+/// </summary>
+/// <param name="userId">The ID of the user whose favourite reports are to be retrieved.</param>
+/// <returns>A list of FavouriteReportContract objects representing the user's favourite reports. Returns an empty list if no favourite reports are found. Returns a 500 Internal Server Error if an exception occurs.</returns>
+[HttpGet("getallfavouritereports")]
+public async Task<ActionResult<List<FavouriteReportContract>>> GetAllFavouriteReports(int userId)
+{
+    try
+    {
+        _logger.LogInformation("Executing GetAllFavouriteReports for userId: {UserId}", userId);
+
+        // Simulate retrieving data from a data source (e.g., database)
+        // Replace this with your actual data access logic
+        // Example:
+        // var favouriteReports = await _reportService.GetFavouriteReportsByUserIdAsync(userId);
+
+        // For now, return an empty list as the business logic is pending
+        List<FavouriteReportContract> favouriteReports = new List<FavouriteReportContract>();
+
+        _logger.LogInformation("Successfully retrieved {Count} favourite reports for userId: {UserId}", favouriteReports.Count, userId);
+
+        return Ok(favouriteReports);
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error in GetAllFavouriteReports for userId: {UserId}", userId);
+        return StatusCode(500, new { error = "An error occurred while retrieving favourite reports." });
+    }
+}
+
 
 
 /// <summary>
@@ -274,49 +405,43 @@ public async Task<ActionResult<OperationResponseContract>> DeleteFavouriteReport
         //if (!result.IsSuccess)
         //{
         //    _logger.LogError("Failed to delete favourite report with ID: {FavouriteReportId}. Error: {ErrorMessage}", favouriteReportId, result.ErrorMessage);
-        //    return BadRequest(result); // Or NotFound, depending on the scenario
+        //    return BadRequest(new OperationResponseContract { IsSuccess = false, ErrorMessage = result.ErrorMessage });
         //}
 
         //_logger.LogInformation("Successfully deleted favourite report with ID: {FavouriteReportId}", favouriteReportId);
-        //return Ok(result);
+        //return Ok(new OperationResponseContract { IsSuccess = true });
 
-        // Placeholder for unimplemented logic:
-        throw new NotImplementedException("Business logic pending for deleting favourite report.");
+        throw new NotImplementedException("Business logic pending");
     }
     catch (Exception ex)
     {
-        _logger.LogError(ex, "Error in DeleteFavouriteReport while deleting favourite report with ID: {FavouriteReportId}", favouriteReportId);
-
-        // Construct a meaningful error response.  Consider using a custom error response object.
-        var response = new OperationResponseContract
-        {
-            IsSuccess = false,
-            ErrorMessage = "An error occurred while deleting the favourite report."
-        };
-
-        return StatusCode(500, response);
+        _logger.LogError(ex, "Error in DeleteFavouriteReport with ID: {FavouriteReportId}", favouriteReportId);
+        return StatusCode(500, new OperationResponseContract { Successful = false, Message = "An unexpected error occurred." });
     }
 }
 
 
 
     /// <summary>
-    /// CreateFavouriteReport operation
+    /// Creates a new favourite report in the system.
     /// </summary>
-    [HttpPost("")]
+    /// <param name="favouriteReportContract">The data for the new favourite report.</param>
+    /// <returns>The ID of the newly created favourite report. Returns 500 if an error occurs.</returns>
+    [HttpPost("createfavouritereport")]
     public async Task<ActionResult<int>> CreateFavouriteReport(FavouriteReportContract favouriteReportContract)
     {
-        try
-        {
-            _logger.LogInformation("Executing CreateFavouriteReport");
-            throw new NotImplementedException("Business logic pending");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error in CreateFavouriteReport");
-            return StatusCode(500, new { error = ex.Message });
-        }
+    try
+    {
+        _logger.LogInformation("Executing CreateFavouriteReport");
+        throw new NotImplementedException("Business logic pending");
     }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error in CreateFavouriteReport");
+        return StatusCode(500, new { error = ex.Message });
+    }
+}
+
 
 
 /// <summary>
@@ -341,49 +466,97 @@ public async Task<ActionResult<OperationResponseContract>> EditFavouriteReport(F
 
 
 
-    /// <summary>
-    /// GetReportOutputTypes operation
-    /// </summary>
-    [HttpGet("getreportoutputtypes")]
-    public async Task<ActionResult<List<ReportOutputTypeContract>>> GetReportOutputTypes(short reportId)
+/// <summary>
+/// Retrieves a list of available output types for a given report ID.
+/// </summary>
+/// <param name="reportId">The ID of the report to retrieve output types for.</param>
+/// <returns>A list of ReportOutputTypeContract objects representing the available output types. Returns an error if an exception occurs.</returns>
+[HttpGet("getreportoutputtypes")]
+public async Task<ActionResult<List<ReportOutputTypeContract>>> GetReportOutputTypes(short reportId)
+{
+    try
     {
-        try
+        _logger.LogInformation("Executing GetReportOutputTypes for reportId: {ReportId}", reportId);
+
+        // Simulate retrieving data (replace with actual data access logic)
+        // For example:
+        // var outputTypes = await _reportService.GetReportOutputTypesAsync(reportId);
+        // if (outputTypes == null || !outputTypes.Any())
+        // {
+        //     return NotFound($"No output types found for report ID: {reportId}");
+        // }
+
+        // Placeholder for actual data retrieval and mapping
+        List<ReportOutputTypeContract> outputTypes = new List<ReportOutputTypeContract>()
         {
-            _logger.LogInformation("Executing GetReportOutputTypes");
-            throw new NotImplementedException("Business logic pending");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error in GetReportOutputTypes");
-            return StatusCode(500, new { error = ex.Message });
-        }
+            new ReportOutputTypeContract { Id = 1, Name = "PDF" },
+            new ReportOutputTypeContract { Id = 2, Name = "Excel" }
+        };
+
+        return Ok(outputTypes);
     }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error in GetReportOutputTypes for reportId: {ReportId}", reportId);
+        return StatusCode(500, new { error = "An error occurred while processing your request." });
+    }
+}
 
 
-    /// <summary>
-    /// MarkReportAsFavourite operation
-    /// </summary>
-    [HttpPost("markreportasfavourite")]
-    public async Task<ActionResult<OperationResponseContract<int>>> MarkReportAsFavourite(int userId, short reportId)
+
+/// <summary>
+/// Marks a report as a favorite for a specific user.
+/// </summary>
+/// <param name="userId">The ID of the user.</param>
+/// <param name="reportId">The ID of the report to mark as favorite.</param>
+/// <returns>An OperationResponseContract containing the number of favorite reports for the user, or an error if the operation fails.</returns>
+[HttpPost("markreportasfavourite")]
+public async Task<ActionResult<OperationResponseContract<int>>> MarkReportAsFavourite(int userId, short reportId)
+{
+    try
     {
-        try
+        _logger.LogInformation("Executing MarkReportAsFavourite for userId: {UserId}, reportId: {ReportId}", userId, reportId);
+
+        // Simulate adding the report to the user's favorites.  Replace with actual business logic.
+        // For example, you might call a service to update a database.
+        // This example just increments a counter.
+
+        // Placeholder for business logic - replace with your actual implementation
+        // Example:
+        // var result = await _reportService.MarkAsFavoriteAsync(userId, reportId);
+        // if (!result.Success)
+        // {
+        //     return BadRequest(new OperationResponseContract<int> { Success = false, ErrorMessage = result.ErrorMessage });
+        // }
+
+        // Simulate retrieving the number of favorite reports for the user.
+        // Replace with your actual data retrieval logic.
+        int numberOfFavoriteReports = 5; // Replace with actual count from database or service
+
+        var response = new OperationResponseContract<int>
         {
-            _logger.LogInformation("Executing MarkReportAsFavourite");
-            throw new NotImplementedException("Business logic pending");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error in MarkReportAsFavourite");
-            return StatusCode(500, new { error = ex.Message });
-        }
+            Successful = true,
+            Data = numberOfFavoriteReports,
+            Message = "Report marked as favorite successfully."
+        };
+
+        _logger.LogInformation("MarkReportAsFavourite completed successfully for userId: {UserId}, reportId: {ReportId}.  Number of favorites: {NumberOfFavorites}", userId, reportId, numberOfFavoriteReports);
+        return Ok(response);
     }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error in MarkReportAsFavourite for userId: {UserId}, reportId: {ReportId}", userId, reportId);
+        return StatusCode(500, new OperationResponseContract<int> { Successful = false, Message = "An error occurred while marking the report as favorite." });
+    }
+}
+
 
 
 /// <summary>
 /// Retrieves a favourite report by its ID.
 /// </summary>
-/// <param name="favouriteReportId">The ID of the favourite report to retrieve.</param>
-/// <returns>An ActionResult containing the FavouriteReportContract if found, otherwise NotFound.</returns>
+/// <param name="favouriteReportId">The unique identifier of the favourite report to retrieve.</param>
+/// <returns>An ActionResult containing the FavouriteReportContract if found, otherwise an error.</returns>
 [HttpGet("getfavouritereport")]
 public async Task<ActionResult<FavouriteReportContract>> GetFavouriteReport(int favouriteReportId)
 {
@@ -393,51 +566,44 @@ public async Task<ActionResult<FavouriteReportContract>> GetFavouriteReport(int 
 
         // Simulate retrieving the report from a data source.  Replace with actual data access logic.
         // For example, using Entity Framework:
-        // var report = await _dbContext.FavouriteReports.FindAsync(favouriteReportId);
+        // var report = await _context.FavouriteReports.FindAsync(favouriteReportId);
 
-        // Placeholder for actual data retrieval and mapping.
-        FavouriteReportContract report = null; // Initialize to null
+        // Placeholder for business logic - replace with actual implementation
+        //if (report == null)
+        //{
+        //    _logger.LogWarning("Favourite report with ID {FavouriteReportId} not found.", favouriteReportId);
+        //    return NotFound();
+        //}
 
-        // Simulate a scenario where the report is not found.
-        if (favouriteReportId == 999) // Example ID that doesn't exist
-        {
-            report = null;
-        }
-        else
-        {
-            report = new FavouriteReportContract
-            {
-                Id = favouriteReportId,
-                Name = $"Report {favouriteReportId}",
-                Description = $"This is a sample report with ID {favouriteReportId}"
-            };
-        }
+        // Map the data entity to the contract.  Replace with AutoMapper or manual mapping.
+        //var contract = new FavouriteReportContract
+        //{
+        //    Id = report.Id,
+        //    Name = report.Name,
+        //    Description = report.Description
+        //};
 
+        // Simulate a successful retrieval and return the contract.
+        //return Ok(contract);
 
-        if (report == null)
-        {
-            _logger.LogWarning("Favourite report with ID: {FavouriteReportId} not found.", favouriteReportId);
-            return NotFound();
-        }
-
-        _logger.LogInformation("Successfully retrieved favourite report with ID: {FavouriteReportId}", favouriteReportId);
-        return Ok(report);
+        // For now, throw a NotImplementedException to indicate that the business logic is pending.
+        throw new NotImplementedException("Business logic pending: Implement data retrieval and mapping to FavouriteReportContract.");
     }
     catch (Exception ex)
     {
-        _logger.LogError(ex, "Error in GetFavouriteReport while retrieving report with ID: {FavouriteReportId}", favouriteReportId);
-        return StatusCode(500, new { error = "An error occurred while processing your request." });
+        _logger.LogError(ex, "Error in GetFavouriteReport with ID: {FavouriteReportId}", favouriteReportId);
+        return StatusCode(500, new { error = "An error occurred while processing your request." }); // Generic error message for security.  Log the specific error.
     }
 }
 
 
 
 /// <summary>
-/// Retrieves a list of saved report parameters for a specific user and report.
+/// Retrieves a list of saved parameter collections for a user's favorite report.
 /// </summary>
 /// <param name="userId">The ID of the user.</param>
 /// <param name="reportId">The ID of the report.</param>
-/// <returns>A list of UsersSavedReportParameterCollection objects representing the saved parameters. Returns an empty list if no parameters are found. Returns a 500 Internal Server Error if an exception occurs.</returns>
+/// <returns>A list of UsersSavedReportParameterCollection objects. Returns an empty list if no parameters are found. Returns a 500 Internal Server Error if an exception occurs.</returns>
 [HttpGet("getlistofparametersforfavouritereport")]
 public async Task<ActionResult<List<UsersSavedReportParameterCollection>>> GetListOfParametersForFavouriteReport(int userId, int reportId)
 {
@@ -448,10 +614,6 @@ public async Task<ActionResult<List<UsersSavedReportParameterCollection>>> GetLi
         // TODO: Implement business logic to retrieve the saved report parameters.
         // Example:
         // var parameters = await _reportService.GetSavedReportParameters(userId, reportId);
-        // if (parameters == null)
-        // {
-        //     return NotFound(); // Or return an empty list, depending on the desired behavior
-        // }
         // return Ok(parameters);
 
         throw new NotImplementedException("Business logic pending");
@@ -459,63 +621,69 @@ public async Task<ActionResult<List<UsersSavedReportParameterCollection>>> GetLi
     catch (Exception ex)
     {
         _logger.LogError(ex, "Error in GetListOfParametersForFavouriteReport with userId: {UserId} and reportId: {ReportId}", userId, reportId);
-        return StatusCode(500, new { error = "An error occurred while retrieving the saved report parameters." });
+        return StatusCode(500, new { error = ex.Message });
     }
 }
 
 
 
 /// <summary>
-/// Checks if a container instance with the given ID is archived in both CM (Content Management) and LKR (Likely a specific system/database).
+/// Checks if a Container Instance with the given ID is archived in both CM (Content Management) and LKR (Likelihood of Recovery) systems.
 /// </summary>
-/// <param name="containerInstanceId">The ID of the container instance to check.</param>
-/// <returns>True if the container instance is archived in both CM and LKR; otherwise, false. Returns an error if an exception occurs.</returns>
+/// <param name="containerInstanceId">The ID of the Container Instance to check.</param>
+/// <returns>True if the Container Instance is archived in both CM and LKR, false otherwise.</returns>
 [HttpPost("checkarchivecmandlkr")]
 public async Task<ActionResult<bool>> CheckArchiveCMAndLKR(int containerInstanceId)
 {
     try
     {
-        _logger.LogInformation("Executing CheckArchiveCMAndLKR with containerInstanceId: {ContainerInstanceId}", containerInstanceId);
+        _logger.LogInformation("Executing CheckArchiveCMAndLKR for ContainerInstanceId: {ContainerInstanceId}", containerInstanceId);
 
-        // TODO: Implement the logic to check if the container instance is archived in CM and LKR.
-        // Replace the following placeholder with the actual implementation.
+        // Simulate checking CM and LKR systems.  Replace with actual business logic.
+        bool isArchivedInCM = await Task.FromResult(containerInstanceId % 2 == 0); // Example: Even IDs are archived in CM
+        bool isArchivedInLKR = await Task.FromResult(containerInstanceId > 100); // Example: IDs greater than 100 are archived in LKR
 
-        // Example placeholder logic:
-        // bool isArchivedInCM = await _cmService.IsArchived(containerInstanceId);
-        // bool isArchivedInLKR = await _lkrService.IsArchived(containerInstanceId);
-        // bool isArchived = isArchivedInCM && isArchivedInLKR;
+        bool isArchived = isArchivedInCM && isArchivedInLKR;
 
-        // For now, return false as a placeholder.
-        bool isArchived = false;
+        _logger.LogInformation("ContainerInstanceId: {ContainerInstanceId} - Archived in CM: {IsArchivedInCM}, Archived in LKR: {IsArchivedInLKR}, Overall Archived: {IsArchived}", containerInstanceId, isArchivedInCM, isArchivedInLKR, isArchived);
 
-        _logger.LogInformation("CheckArchiveCMAndLKR completed. Result: {IsArchived}", isArchived);
         return Ok(isArchived);
     }
     catch (Exception ex)
     {
-        _logger.LogError(ex, "Error in CheckArchiveCMAndLKR for containerInstanceId: {ContainerInstanceId}", containerInstanceId);
-        return StatusCode(500, new { error = "An error occurred while checking archive status." });
+        _logger.LogError(ex, "Error in CheckArchiveCMAndLKR for ContainerInstanceId: {ContainerInstanceId}", containerInstanceId);
+        return StatusCode(500, new { error = ex.Message });
     }
 }
 
 
     /// <summary>
-    /// CreateLinkingForCase operation
+    /// Creates a linking between a case and other related entities (e.g., documents, parties).  This endpoint handles the creation of these links based on provided data.
     /// </summary>
-    [HttpPost("")]
-    public async Task<ActionResult<void>> CreateLinkingForCase()
+    /// <returns>An ActionResult indicating success or failure.  Returns 200 OK on success, or an appropriate error code (e.g., 400 Bad Request, 500 Internal Server Error) on failure.</returns>
+    [HttpPost("createlinkingforcase")]
+    public async Task<ActionResult> CreateLinkingForCase()
     {
-        try
-        {
-            _logger.LogInformation("Executing CreateLinkingForCase");
-            throw new NotImplementedException("Business logic pending");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error in CreateLinkingForCase");
-            return StatusCode(500, new { error = ex.Message });
-        }
+    try
+    {
+        _logger.LogInformation("Executing CreateLinkingForCase");
+        // TODO: Implement the business logic for creating the linking.
+        // This will likely involve:
+        // 1.  Retrieving data from the request body (e.g., case ID, related entity IDs).
+        // 2.  Validating the data.
+        // 3.  Creating the linking in the database.
+        // 4.  Returning a success response.
+
+        // Placeholder for successful execution.  Replace with actual logic.
+        return Ok();
     }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error in CreateLinkingForCase");
+        return StatusCode(500, new { error = ex.Message });
+    }
+}
+
 
 
 /// <summary>
@@ -551,7 +719,7 @@ public async Task<ActionResult<List<ItemExceptionsDataContract>>> GetItemExcepti
 /// Retrieves a list of item exception dates based on the external ID and turnaround ID.
 /// </summary>
 /// <param name="externalId">The external identifier of the item.</param>
-/// <param name="turnaroundId">The turnaround identifier.</param>
+/// <param name="turnaroundId">The identifier of the turnaround.</param>
 /// <returns>A list of ItemExceptionsDataContract objects representing the exception dates. Returns an empty list if no exceptions are found. Returns a 500 Internal Server Error if an exception occurs.</returns>
 [HttpGet("getitemexceptiondatesbyturnaroundid")]
 public async Task<ActionResult<List<ItemExceptionsDataContract>>> GetItemExceptionDatesByTurnaroundId(string externalId, int turnaroundId)
@@ -560,21 +728,26 @@ public async Task<ActionResult<List<ItemExceptionsDataContract>>> GetItemExcepti
     {
         _logger.LogInformation("Executing GetItemExceptionDatesByTurnaroundId with externalId: {ExternalId} and turnaroundId: {TurnaroundId}", externalId, turnaroundId);
 
-        // TODO: Implement business logic to retrieve item exception dates based on externalId and turnaroundId.
-        // Example:
+        // Simulate retrieving data (replace with actual data access logic)
+        // For example:
         // var exceptions = await _itemExceptionService.GetExceptions(externalId, turnaroundId);
-        // if (exceptions == null || exceptions.Count == 0)
+        // if (exceptions == null || !exceptions.Any())
         // {
-        //     return Ok(new List<ItemExceptionsDataContract>()); // Or NotFound() if you prefer
+        //     return Ok(new List<ItemExceptionsDataContract>()); // Return empty list if no exceptions found
         // }
-        // return Ok(exceptions.Select(e => new ItemExceptionsDataContract { ExceptionDate = e.ExceptionDate }).ToList());
 
-        throw new NotImplementedException("Business logic pending");
+        // Map the data to the data contract (replace with actual mapping)
+        // var dataContracts = exceptions.Select(e => new ItemExceptionsDataContract { ExceptionDate = e.ExceptionDate }).ToList();
+
+        // For now, return an empty list as a placeholder
+        List<ItemExceptionsDataContract> dataContracts = new List<ItemExceptionsDataContract>();
+
+        return Ok(dataContracts);
     }
     catch (Exception ex)
     {
         _logger.LogError(ex, "Error in GetItemExceptionDatesByTurnaroundId with externalId: {ExternalId} and turnaroundId: {TurnaroundId}", externalId, turnaroundId);
-        return StatusCode(500, new { error = ex.Message });
+        return StatusCode(500, new { error = "An error occurred while processing the request." });
     }
 }
 

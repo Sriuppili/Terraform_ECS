@@ -1,6 +1,6 @@
 using SynergyApplicationFrameworkApi.Application.Services;
-using SynergyApplicationFrameworkApi.Application.DTOsContracts.ContainerInstanceIdentifiers;
-using SynergyApplicationFrameworkApi.Application.Engine.Shared.ContainerInstanceIdentifiers;
+using SynergyApplicationFrameworkApi.Application.DTOs.ContainerInstanceIdentifiers;
+using SynergyApplicationFrameworkApi.Application.Services.Shared.ContainerInstanceIdentifiers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

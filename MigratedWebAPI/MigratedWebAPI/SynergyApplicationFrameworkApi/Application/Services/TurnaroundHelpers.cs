@@ -1,4 +1,4 @@
-using SynergyApplicationFrameworkApi.Application.Engine.Shared.Helpers;
+using SynergyApplicationFrameworkApi.Application.Services.Shared.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

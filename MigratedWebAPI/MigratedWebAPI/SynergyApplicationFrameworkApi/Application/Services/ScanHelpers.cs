@@ -1,5 +1,5 @@
-using SynergyApplicationFrameworkApi.Application.DTOsContracts.Data;
-using SynergyApplicationFrameworkApi.Application.DTOsContracts.Scan;
+using SynergyApplicationFrameworkApi.Application.DTOs.Data;
+using SynergyApplicationFrameworkApi.Application.DTOs.Scan;
 using SynergyApplicationFrameworkApi.Application.Services.TurnaroundProcessing;
 using System;
 using System.Collections.Generic;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace SynergyApplicationFrameworkApi.Application.DTOs
 {
@@ -10,6 +11,7 @@ namespace SynergyApplicationFrameworkApi.Application.DTOs
     /// Item Types -- Only for Item Base Type
     /// </summary>
     /// <remarks></remarks>
+    [DataContract]
     public enum ItemTypeIdentifier
     {
         [EnumMember]

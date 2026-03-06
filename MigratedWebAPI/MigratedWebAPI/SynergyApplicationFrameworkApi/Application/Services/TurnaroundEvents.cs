@@ -2,8 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using SynergyApplicationFrameworkApi.Application.Services;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
+using SynergyApplicationFrameworkApi.Framework.Container;
+using SynergyApplicationFrameworkApi.Data.Models;
+using SynergyApplicationFrameworkApi.Data.Repositories;
+using SynergyApplicationFrameworkApi.Domain.Models;
+using SynergyApplicationFrameworkApi.Framework;
+using SynergyApplicationFrameworkApi.Application.Contracts;
 
 namespace SynergyApplicationFrameworkApi.Application.Services
 {
@@ -19,8 +25,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
     {
         #region Fields
 
-        protected SynergyTrakData _data;
-        protected ILog Log;
+        protected SynergyTrakData? _data;
+        protected ILog? Log;
 
         #endregion
 
@@ -54,7 +60,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
 
                 if (mi != null && data is SynergyTrakData)
                 {
-                    var obj = Activator.CreateInstance(dt, new object[] { data });
+                    var obj = Activator.CreateInstance(dt, new object[] { ((SynergyTrakData)data) })!;
                     mi.Invoke(obj, new object[] { ((SynergyTrakData)data).ScanDC, ((SynergyTrakData)data).ScanDetails });
 
                     return true;
@@ -95,7 +101,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
                 }
             };
 
-            return ApplyEvent(eventsToApply, _data.ScanDcList, scanDetails, false);
+            return ApplyEvent(eventsToApply, _data?.ScanDcList ?? new List<ScanAssetDataContract>(), scanDetails, false);
         }
 
         protected List<TurnaroundEventComplete> ApplyEvent(ApplyTurnaroundEventDetails eventToApply, ScanAssetDataContract scanDC, ScanDetails scanDetails)
@@ -115,7 +121,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         {
             var eventsToApply = new List<ApplyTurnaroundEventDetails> { eventToApply };
 
-            return ApplyEvent(eventsToApply, _data.ScanDcList, scanDetails, false);
+            return ApplyEvent(eventsToApply, _data?.ScanDcList ?? new List<ScanAssetDataContract>(), scanDetails, false);
         }
 
         protected List<TurnaroundEventComplete> ApplyEvent(ApplyTurnaroundEventDetails eventDetails, List<ScanAssetDataContract> dataContracts, ScanDetails scanDetails)
@@ -133,7 +139,7 @@ namespace SynergyApplicationFrameworkApi.Application.Services
 
         protected List<TurnaroundEventComplete> ApplyEvent(List<ApplyTurnaroundEventDetails> eventsToApply, ScanDetails scanDetails)
         {
-            return ApplyEvent(eventsToApply, _data.ScanDcList, scanDetails, false);
+            return ApplyEvent(eventsToApply, _data?.ScanDcList ?? new List<ScanAssetDataContract>(), scanDetails, false);
         }
 
         protected List<TurnaroundEventComplete> ApplyEvent(List<ApplyTurnaroundEventDetails> eventsToApply, ScanAssetDataContract scanDC, ScanDetails scanDetails)
@@ -167,8 +173,8 @@ namespace SynergyApplicationFrameworkApi.Application.Services
 
                 if (turnaroundExternalId.HasValue)
                 {
-                    var turnaround = turnaroundRepository.GetTurnaroundByExternalIdAndFacilityId(turnaroundExternalId.Value, _data.FacilityId);
-                    if (turnaround.ContainerInstanceId.HasValue)
+                    var turnaround = turnaroundRepository.GetTurnaroundByExternalIdAndFacilityId(turnaroundExternalId.Value, _data?.FacilityId ?? 0);
+                    if (turnaround?.ContainerInstanceId.HasValue == true)
                     {
                         var containerInstanceRepository = ContainerInstanceRepository.New(workUnit);
                         var containerInstance = containerInstanceRepository.Get(turnaround.ContainerInstanceId.Value);
@@ -190,8 +196,9 @@ namespace SynergyApplicationFrameworkApi.Application.Services
         /// <summary>
         /// CreateTurnaroundAssigned operation
         /// </summary>
-        public void CreateTurnaroundAssigned(int turnaroundId, int parentTurnaroundId,bool forceCreateNew)
+        public void CreateTurnaroundAssigned(int turnaroundId, int parentTurnaroundId, bool forceCreateNew)
         {
+            using (var workUnit = UnitOfWorkFactory.CreateOperativeEFUnitOfWork())
             {
                 var turnaroundAssignedRepository = TurnaroundAssignedRepository.New(workUnit);
                 var turnaroundAssigned = TurnaroundAssignedFactory.CreateEntity(workUnit,
@@ -207,17 +214,17 @@ namespace SynergyApplicationFrameworkApi.Application.Services
                     workUnit.Save();
                 }
                 else if (forceCreateNew && taAlreadyExists != null)
-                { 
+                {
                     turnaroundAssignedRepository.Delete(taAlreadyExists);
                     turnaroundAssignedRepository.Add(turnaroundAssigned);
                     workUnit.Save();
                 }
-                                
             }
         }
-       
+
         protected void RemoveFromParent(ScanAssetDataContract scanDC)
         {
+            using (var workUnit = UnitOfWorkFactory.CreateOperativeEFUnitOfWork())
             {
                 var turnaroundWhRepository = TurnaroundWHRepository.New(workUnit);
                 var turnaroundRepository = TurnaroundRepository.New(workUnit);
@@ -250,12 +257,9 @@ namespace SynergyApplicationFrameworkApi.Application.Services
     /// Attribute for marking methods with the relevant turnaround event type. 
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    /// <summary>
-    /// ProcessTurnaroundEvent
-    /// </summary>
-    public class ProcessTurnaroundEvent : System.Attribute
+    public class ProcessTurnaroundEvent : Attribute
     {
-        TurnAroundEventTypeIdentifier _eventType;
+        private TurnAroundEventTypeIdentifier _eventType;
 
         public ProcessTurnaroundEvent(TurnAroundEventTypeIdentifier eventType)
         {
@@ -274,5 +278,4 @@ namespace SynergyApplicationFrameworkApi.Application.Services
             }
         }
     }
-
 }

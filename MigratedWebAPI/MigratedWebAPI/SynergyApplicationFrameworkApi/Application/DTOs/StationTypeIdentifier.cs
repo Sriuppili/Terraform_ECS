@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+using System.ComponentModel;
 
 namespace SynergyApplicationFrameworkApi.Application.DTOs
 {
@@ -115,7 +117,7 @@ namespace SynergyApplicationFrameworkApi.Application.DTOs
         OutofAutoclaveDispatch = 35,
         [EnumMember]
         [Description("Operative:Language:Operative_View_Win_Forms_Shared_PackingCompleted")]
-        PackingCompleted = 37, 
+        PackingCompleted = 37,
         [EnumMember]
         [Description("Operative:Language:Operative_View_Win_Forms_Shared_InspectionAndAssembly")]
         InspectionAndAssembly = 38,

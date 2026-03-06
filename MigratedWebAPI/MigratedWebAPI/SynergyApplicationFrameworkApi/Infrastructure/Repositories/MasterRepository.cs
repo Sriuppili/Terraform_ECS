@@ -1,5 +1,5 @@
-using SynergyApplicationFrameworkApi.Application.Services.DataContracts;
-using SynergyApplicationFrameworkApi.Application.Services.Website.DataContracts;
+using SynergyApplicationFrameworkApi.Application.DTOs;
+using SynergyApplicationFrameworkApi.Application.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace SynergyApplicationFrameworkApi.Infrastructure.Repositories
 {

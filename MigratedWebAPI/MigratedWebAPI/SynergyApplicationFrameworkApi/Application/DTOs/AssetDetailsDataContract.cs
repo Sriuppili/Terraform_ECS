@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
-using SynergyApplicationFrameworkApi.Application.DTOsContracts.ContainerInstanceIdentifiers;
+//using SynergyApplicationFrameworkApi.Application.DTOs.ContainerInstanceIdentifiers;
 using SynergyApplicationFrameworkApi.Application.DTOs;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using Pathway;
 
 namespace SynergyApplicationFrameworkApi.Application.DTOs
 {
@@ -178,8 +179,8 @@ namespace SynergyApplicationFrameworkApi.Application.DTOs
         /// Gets or sets ContainerInstanceIdentifiers
         /// </summary>
         public List<ContainerInstanceIdentifierDataContract> ContainerInstanceIdentifiers { get; set; }
-        public Enums.QualityIdentifier? Quality { get; set; }
-        public Enums.QualityTypeIdentifier? QualityType { get; set; }
+        public Pathway.Enums.QualityIdentifier? Quality { get; set; }
+        public Pathway.Enums.QualityTypeIdentifier? QualityType { get; set; }
         public int? BlueprintContainerMasterId { get; set; }
         /// <summary>
         /// Gets or sets AutomaticEventDetails

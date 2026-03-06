@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace SynergyApplicationFrameworkApi.Controllers
 {
     /// <summary>
-    /// Controller for handling base service operations.
+    /// Controller for handling base service operations.  This controller mimics the functionality of the original WCF ServiceBase.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
@@ -40,12 +40,12 @@ namespace SynergyApplicationFrameworkApi.Controllers
         {
             try
             {
-                _logger.LogInformation("Attempting to retrieve CacheManager.");
+                _logger.LogInformation("Getting Cache Manager.");
                 return Ok(_cacheManager);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving CacheManager.");
+                _logger.LogError(ex, "Error getting Cache Manager.");
                 return StatusCode(500, "Internal server error");
             }
         }
@@ -59,27 +59,27 @@ namespace SynergyApplicationFrameworkApi.Controllers
         {
             try
             {
-                _logger.LogInformation("Attempting to retrieve Translator.");
+                _logger.LogInformation("Getting Translator.");
                 return Ok(_translator);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving Translator.");
+                _logger.LogError(ex, "Error getting Translator.");
                 return StatusCode(500, "Internal server error");
             }
         }
 
         /// <summary>
-        /// Disposes of the resources used by the controller.
+        /// Disposes of the resources used by the controller.  Currently, this does nothing.
         /// </summary>
         [HttpDelete("Dispose")]
-        public IActionResult DisposeController()
+        public IActionResult DisposeService()
         {
             try
             {
                 _logger.LogInformation("Disposing ServiceBaseController.");
-                // No resources to dispose in this example, but you can add disposal logic here if needed.
-                return Ok("Controller disposed.");
+                // Nothing to dispose here, but keeping the method for potential future use.
+                return Ok();
             }
             catch (Exception ex)
             {

@@ -1,11 +1,15 @@
 using System.Collections.Generic;
-using SynergyApplicationFrameworkApi.Application.Services.Stations.DataContracts;
-using SynergyApplicationFrameworkApi.Application.Services.DataContracts;
-using SynergyApplicationFrameworkApi.Application.Services.Website.DataContracts;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using SynergyApplicationFrameworkApi.Application.Services.DataContracts;
+using SynergyApplicationFrameworkApi.Application.DTOs;
+using SynergyApplicationFrameworkApi.Application.DTOs;
+using SynergyApplicationFrameworkApi.Application.Models;
+using SynergyApplicationFrameworkApi.Application.Contracts;
+using SynergyApplicationFrameworkApi.Application.Entities;
+using SynergyApplicationFrameworkApi.Application.ValueObjects;
 
 namespace SynergyApplicationFrameworkApi.Application.Interfaces
 {
@@ -97,7 +101,7 @@ namespace SynergyApplicationFrameworkApi.Application.Interfaces
         /// <param name="userReports"></param>
         /// <returns></returns>
         /// <remarks></remarks>
-        UserData CreateUser(UserData user, IList<UserFacilityData> userFacilitie, short[] roles, IList<UserPrinterData> printers, IList<UserComplexityData> userItemComplexities, int operatorId,List<int> deliveryPoints, List<int> userReports);
+        UserData CreateUser(UserData user, IList<UserFacilityData> userFacilitie, short[] roles, IList<UserPrinterData> printers, IList<UserComplexityData> userItemComplexities, int operatorId, List<int> deliveryPoints, List<int> userReports);
 
         /// <summary>
         /// Updates the user.

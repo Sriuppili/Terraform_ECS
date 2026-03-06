@@ -1,8 +1,8 @@
 using System;
-using SynergyApplicationFrameworkApi.Application.Data.Interfaces.Operative;
+using SynergyApplicationFrameworkApi.Application.DTOs.Interfaces.Operative;
 using System.Linq;
 using SynergyApplicationFrameworkApi.Application.DTOs;
-using SynergyApplicationFrameworkApi.Application.Services.Website.DataContracts;
+using SynergyApplicationFrameworkApi.Application.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text;
