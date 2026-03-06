@@ -28,7 +28,7 @@ COPY --from=build /app/out ./
 # Create the logs directory for Serilog
 RUN mkdir -p /app/logs
 
-# Set environment variables
+# Set environment variables for application
 ENV ASPNETCORE_URLS="http://+:80;https://+:443"
 ENV ASPNETCORE_ENVIRONMENT="Production"
 ENV DOTNET_USE_POLLING_FILE_WATCHER=true
