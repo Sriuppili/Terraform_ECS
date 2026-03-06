@@ -1,0 +1,54 @@
+# Build artifacts
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+
+# IDE files
+.vs/
+.vscode/
+*.suo
+*.user
+*.sln
+*.swp
+
+# Git files
+.git/
+.gitignore
+
+# NuGet packages
+packages/
+**/packages/*
+*.nupkg
+# Test Results
+TestResults/
+*.trx
+
+# Logs and temporary files
+logs/
+*.log
+*.tmp
+*.dmp
+synergy-api-*.txt # Assuming rolling log names
+
+# Dependency file artifacts
+**/node_modules
+
+# Docker related files
+docker-compose.*.yml
+docker-compose.yml
+
+# Windows files
+Thumbs.db
+*.DS_Store
+
+# Visual Studio cache files
+.vs/
+**/DesignTimeAssemblyInfo.cs
+
+# Other files
+*.bak
+*.orig
+*.rpt
+*.cache
+*.resharper*

@@ -1,0 +1,20 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+
+namespace SynergyApplicationFrameworkApi.Application.DTOs
+{/// <summary>
+    /// Enum values that represent autoclave batch status types.
+    /// </summary>
+    /// <remarks>Dan.maunder, 02/10/2011.</remarks>
+    public enum MaintenanceTypeIdentifier
+    { 
+        [EnumMember]
+        PlannedMaintenance = 1,
+        [EnumMember]
+        Repair = 2
+        
+    }
+}

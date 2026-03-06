@@ -1,0 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+
+namespace SynergyApplicationFrameworkApi.Application.DTOs
+{
+    /// <summary> Values that represent customer costing model types.</summary>
+    ///
+    /// <remarks> Dan.maunder, 02/10/2011.</remarks>
+    public enum CustomerCostingModelTypes
+    {
+        [EnumMember]
+        Automatic = 1
+    }
+}

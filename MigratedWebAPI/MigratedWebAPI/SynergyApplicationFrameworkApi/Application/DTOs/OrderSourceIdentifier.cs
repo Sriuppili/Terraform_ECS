@@ -1,0 +1,23 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+
+namespace SynergyApplicationFrameworkApi.Application.DTOs
+{
+    public enum OrderSourceIdentifier
+    {
+        [EnumMember]
+        API = 1,
+
+        [EnumMember]
+        SAF = 2,
+
+        [EnumMember]
+        Admin = 3,
+
+        [EnumMember]
+        Operative = 4,
+    }
+}
