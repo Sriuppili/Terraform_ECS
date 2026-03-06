@@ -38,9 +38,9 @@ ENV NUGET_FALLBACK_PACKAGES=/root/.nuget/fallbackpackages
 EXPOSE 80
 EXPOSE 443
 
-# Health check
+# Health check for application
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl -f http://localhost:80/health || exit 1
 
-# Run the application
+# Run the application 
 ENTRYPOINT ["dotnet", "SynergyApplicationFrameworkApi.dll"]
 
