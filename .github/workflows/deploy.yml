@@ -29,7 +29,7 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
- # ✅ STEP 1 — Create only infra (ECR + VPC + Cluster)
+ #  STEP 1 — Create only infra (ECR + VPC + Cluster)
       - name: Terraform Apply Infra Only
         run: |
           terraform apply \
@@ -54,7 +54,7 @@ jobs:
 #          docker build -t $ECR_REPO:latest .
 #          docker push $ECR_REPO:latest
 
-# ✅ STEP 4 — Build & Push Docker Image
+#  STEP 2 — Build & Push Docker Image
       - name: Build and Push Docker Image
         run: |
           IMAGE_TAG=${GITHUB_SHA::8}
@@ -68,7 +68,7 @@ jobs:
 #          docker build -t $ECR_REPO:latest .
 #          docker push $ECR_REPO:latest
 
-# ✅ STEP 5 — Create Task Definition + Service
+#  STEP 3 — Create Task Definition + Service
       - name: Terraform Apply Full
         run: terraform apply -auto-approve -var="image=$IMAGE_URI"            
       - name: Get ALB DNS
